@@ -1,16 +1,61 @@
 {
-  "name": "api",
+  "name": "nest-typescript-starter",
   "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
-  "dependencies": {
-    "express": "^4.17.1"
-  },
-  "devDependencies": {},
+  "description": "Nest TypeScript starter repository",
+  "license": "MIT",
   "scripts": {
-    "start:dev": "nodemon server.js",
-    "start:prod": "node server.js"
+    "build": "tsc -p tsconfig.build.json",
+    "build:dev": "nest build --watch --webpack",
+    "start:dev": "nest build --watch --webpack && node dist/main",
+    "start": "node dist/main",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
   },
-  "author": "",
-  "license": "ISC"
+  "dependencies": {
+    "@nestjs/common": "6.8.3",
+    "@nestjs/core": "6.8.3",
+    "@nestjs/platform-express": "6.8.3",
+    "@nestjs/testing": "6.8.3",
+    "class-transformer": "^0.2.3",
+    "class-validator": "^0.10.2",
+    "jest": "24.9.0",
+    "nest": "^0.1.6",
+    "prettier": "1.18.2",
+    "reflect-metadata": "0.1.13",
+    "rxjs": "6.5.3",
+    "ts-jest": "24.1.0",
+    "ts-loader": "6.2.0",
+    "ts-node": "8.4.1",
+    "tsconfig-paths": "3.9.0",
+    "tslint": "5.20.0",
+    "typescript": "3.6.4"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".spec.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  },
+  "devDependencies": {
+    "@types/node": "12.7.12",
+    "ts-loader": "6.2.0",
+    "ts-node": "8.4.1",
+    "tslint": "5.20.0",
+    "webpack": "4.41.1",
+    "webpack-cli": "3.3.9",
+    "webpack-node-externals": "1.7.2"
+  }
 }
