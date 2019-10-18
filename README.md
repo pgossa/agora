@@ -13,9 +13,9 @@ Notre projet est composé d'une API qui gère toutes les données relatives aux 
 
 ### API
 
-[API](api/README.md)
+[Readme API](api/README.md)
 
 
-### Webview
+### APP
 
-[Webview](webview/README.md)
+[Readme APP](app/README.md)

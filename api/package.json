@@ -1,0 +1,16 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start:dev": "nodemon server.js",
+    "start:prod": "node server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
