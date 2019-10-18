@@ -1,11 +1,16 @@
 {
-  "name": "main",
-  "version": "1.0.0",
-  "description": "",
+  "name": "sondage",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "api": "cd api && npm install && npm run start:dev",
-    "app": "cd app && npm install && npm run start:dev"
+    "start": "node ./bin/www"
   },
-  "author": "",
-  "license": "ISC"
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
+    "morgan": "~1.9.1"
+  }
 }
