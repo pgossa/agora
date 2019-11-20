@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  sapi:
+    build: ./api/build
+    ports:
+      - "3546:3000"
+    volumes:
+      - ./api:/var/workspace/api
+    restart: unless-stopped
+    networks:
+      - sondage
+
+  sapp:
+    depends_on:
+      - sapi
+    build: ./app/build
+    ports: 
+      - "3243:3000"
+    volumes:
+      - ./app:/var/workspace/app
+    restart: unless-stopped
+    networks:
+      - sondage
+
+networks:
+  sondage:
+    external:
+      name: sondage
