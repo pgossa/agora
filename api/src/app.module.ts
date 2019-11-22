@@ -1,9 +1,14 @@
 import { Module } from '@nestjs/common';
-import { CatsController } from './cat/cat.controller';
-import { CatsService } from './cat/cat.service';
+import { join } from 'path';
+import { GraphQLModule } from '../lib';
+import { CatsModule } from './cats/cats.module';
 
 @Module({
-  controllers: [CatsController],
-  providers: [CatsService],
+  imports: [
+    CatsModule,
+    GraphQLModule.forRoot({
+      typePaths: [join(__dirname, '**', '*.graphql')],
+    }),
+  ],
 })
-export class AppModule {}
+export class ApplicationModule {}
