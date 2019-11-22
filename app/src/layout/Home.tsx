@@ -6,15 +6,25 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import { Row, Input, Col } from 'antd';
 
 
 class Home extends Component {
   render() {
     return (
       <div>
-          HOME new
-          
-          <Button type="default">Boutton</Button>
+        <br />
+        <Row align='middle' justify='center' type='flex'>
+          <Col span={4}>
+            <Input placeholder='Code (ex: G54ML)'></Input>
+          </Col>
+        </Row>
+        <br />
+        <Row align='middle' justify='center' type='flex'>
+          <Link to="/create">
+            <Button>Créé un sondage</Button>
+          </Link>
+        </Row>
       </div>
     );
   }

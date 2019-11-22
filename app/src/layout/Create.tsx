@@ -1,20 +1,25 @@
 import React, { Component } from 'react';
-import Button from 'antd/es/button';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link
 } from "react-router-dom";
+import { Row, Col, Input, Button, Icon } from 'antd';
 
 
 class Create extends Component {
   render() {
     return (
       <div>
-          Create new
-          <br></br>
-          <Button type="default">Boutton</Button>
+        <br/>
+        <Row align='middle' justify='center' type='flex'>
+          <Col span={10}>
+            <Input placeholder='Question' addonAfter={<Icon type="question" />}></Input>
+          </Col>
+        </Row>
+        <br/>
+        <Button type="default">Create</Button>
       </div>
     );
   }

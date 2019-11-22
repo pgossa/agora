@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Button from 'antd/es/button';
+import { Menu, Icon } from 'antd';
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -8,7 +8,7 @@ import {
   Link
 } from "react-router-dom";
 
-import {Foo, Bar } from './Pages';
+import { Foo, Bar } from './Pages';
 
 import Home from './layout/Home';
 import Create from './layout/Create';
@@ -23,11 +23,23 @@ class App extends Component {
         <Router>
           <div>
             <nav>
-              <Link to="/">Home</Link>
-              <Link to="/create">Create</Link>
-              <Link to="/survey/h24s2e">Survey</Link>
-              <Link to="/share/h24s2e">Share</Link>
-              <Link to="/result/h24s2e">Résult</Link>
+              <Menu mode="horizontal">
+                <Menu.Item key='home'>
+                  <Link to="/">Home</Link>
+                </Menu.Item>
+                <Menu.Item key='create'>
+                  <Link to="/create">Create</Link>
+                </Menu.Item>
+                <Menu.Item key='survey'>
+                  <Link to="/survey/h24s2e">Survey</Link>
+                </Menu.Item>
+                <Menu.Item key='share'>
+                  <Link to="/share/h24s2e">Share</Link>
+                </Menu.Item>
+                <Menu.Item key='result'>
+                  <Link to="/result/h24s2e">Résult</Link>
+                </Menu.Item>
+              </Menu>
             </nav>
             <Switch>
               <Route exact path="/" component={Home} />
