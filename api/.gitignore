@@ -14,10 +14,7 @@ npm-debug.log
 /quick-start
 
 # tests
-<<<<<<< HEAD
-=======
 /build.log
->>>>>>> develop
 /test
 /coverage
 /.nyc_output
