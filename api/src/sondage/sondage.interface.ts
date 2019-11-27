@@ -1,19 +1,20 @@
 enum QuestionType {
-    BOOLEAN = 'boolean'
-  }
-  
-  interface ResultQuestion {
+    BOOLEAN = 'boolean',
+    NUMBER = 'number'
+}
+
+interface ResultQuestion {
     choice: string,
-    count: number,
-  }
-  
-  interface Question {
+    count: number
+}
+
+interface Question {
     type: QuestionType,
     text: string,
-    result: ResultQuestion[],
-  }
+    result: ResultQuestion[]
+}
 
 export interface Sondage {
     id: string,
-    question: Question[];
+    question: Question[]
 }

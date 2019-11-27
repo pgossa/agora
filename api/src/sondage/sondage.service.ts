@@ -1,14 +1,8 @@
-import { Injectable, Body } from '@nestjs/common';
-import { Sondage } from './sondage.interface';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class SondageService {
   getHello(): string {
     return 'Hello World!';
   }
-}
-
-@Injectable()
-export class SondageService {
-  async createSondage(@Body() Sondage sondage): 
 }

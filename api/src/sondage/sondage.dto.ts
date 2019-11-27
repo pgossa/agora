@@ -1,15 +1,22 @@
-import { IsString, IsInt } from 'class-validator';
+enum QuestionType {
+    BOOLEAN = 'boolean',
+    NUMBER = 'number'
+}
 
-export class CreateSondageDto {
-  @IsString()
-  readonly choice: string;
+interface ResponseQuestion {
+    id: number,
+    text: string,
+    count: number
+}
 
-  @IsInt()
-  readonly count: number;
+interface Question {
+    id: number,
+    type: QuestionType,
+    text: string,
+    responses: ResponseQuestion[]
+}
 
-  @IsString()
-  readonly text: string;
-
-  @IsString()
-  readonly  id: string;
+export class SondageDto {
+    readonly id: string;
+    readonly questions: Question[];
 }
