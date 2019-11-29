@@ -8,7 +8,7 @@ export class SondageController {
 
   @Get()
   @HttpCode(HttpStatus.FOUND)
-  getSondages() {
+  callGetSondages() {
     let rand = Math.floor(Math.random() * Math.floor(3));
     if (0 < rand) {
       //Recup le json du sondage
@@ -20,7 +20,7 @@ export class SondageController {
   }
 
   @Get(':id')
-  getSondage(@Param('id') id: string): string {
+  callGetSondage(@Param('id') id: string): string {
     return `C'est le sondage d'id ${id}`;
   }
 
@@ -30,8 +30,10 @@ export class SondageController {
   }
 
   @Post()
-  async createSondage(@Body() sondageDto: SondageDto) {
-    return 'This action creates a sondage';
+  async callCreateSondage(@Body() sondageDto: SondageDto) {
+    this.sondageService.createSondage(sondageDto);
+    let sondages = this.sondageService.getSondages();
+    return sondages;
   }
 
   @Delete(':id')

@@ -3,18 +3,20 @@ enum QuestionType {
     NUMBER = 'number'
 }
 
-interface ResultQuestion {
-    choice: string,
+interface ResponseQuestion {
+    id: number,
+    text: string,
     count: number
 }
 
 interface Question {
+    id: number,
     type: QuestionType,
     text: string,
-    result: ResultQuestion[]
+    responses: ResponseQuestion[]
 }
 
 export interface Sondage {
-    id: string,
-    question: Question[]
+    id: string;
+    questions: Question[];
 }
