@@ -1,3 +1,5 @@
+import { IsUUID, IsNotEmptyObject } from 'class-validator';
+
 enum QuestionType {
     BOOLEAN = 'boolean',
     NUMBER = 'number'
@@ -17,6 +19,7 @@ interface Question {
 }
 
 export class SondageDto {
-    readonly id: string;
-    readonly questions: Question[];
+    @IsUUID()
+    id: string;
+    questions: Question[];
 }
