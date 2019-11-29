@@ -1,27 +1,36 @@
-import { Controller, Get, Post, Param, Body, Put, Delete, HttpException, HttpStatus, HttpCode} from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, Delete, HttpException, HttpStatus, HttpCode} from '@nestjs/common';
 import { SondageService } from './sondage.service';
+import { FormatService } from 'src/device/format.service';
 import { SondageDto } from './sondage.dto';
+import { Sondage } from './sondage.interface';
 
 @Controller('sondage')
 export class SondageController {
-  constructor(private readonly sondageService: SondageService) {}
+  constructor(
+    private readonly sondageService: SondageService,
+    private readonly formatService: FormatService
+  ) {}
 
   @Get()
   @HttpCode(HttpStatus.FOUND)
-  callGetSondages() {
-    let rand = Math.floor(Math.random() * Math.floor(3));
-    if (0 < rand) {
-      //Recup le json du sondage
-      //Exemple :
-      return {data: 2};
+  callGetSondages(): Sondage[]|HttpException {
+    let allSondages = this.sondageService.getSondages();
+    if (allSondages) {
+      return allSondages;
     } else {
-      throw new HttpException('No sondage found', HttpStatus.NOT_FOUND);
+      throw new HttpException('No ressources found', HttpStatus.NOT_FOUND);
     }
   }
 
   @Get(':id')
-  callGetSondage(@Param('id') id: string): string {
-    return `C'est le sondage d'id ${id}`;
+  @HttpCode(HttpStatus.FOUND)
+  callGetSondage(@Param('id') id: string): Sondage|HttpException {
+    let oneSondage = this.sondageService.getSondage(id);
+    if (oneSondage) {
+      return oneSondage;
+    } else {
+      throw new HttpException(`No ressource found with id ${id}`, HttpStatus.NOT_FOUND);
+    }
   }
 
   @Post(':sondageId/question/:questionId')
@@ -30,14 +39,19 @@ export class SondageController {
   }
 
   @Post()
+  @HttpCode(HttpStatus.CREATED)
   async callCreateSondage(@Body() sondageDto: SondageDto) {
     this.sondageService.createSondage(sondageDto);
-    let sondages = this.sondageService.getSondages();
-    return sondages;
+    return this.sondageService.getSondages();
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return `This action removes the sondage ${id}`;
+  @HttpCode(HttpStatus.OK)
+  callDeleteSondage(@Param('id') id: string): object|HttpException {
+    if (this.sondageService.deleteSondage(id)) {
+      return this.formatService.generateJsonMessage('Ressource deleted', HttpStatus.OK);
+    } else {
+      throw new HttpException(`No ressource found with id ${id}`, HttpStatus.NOT_FOUND);
+    }
   }
 }
