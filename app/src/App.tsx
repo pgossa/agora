@@ -1,58 +1,106 @@
-import React, { Component } from 'react';
-import { Menu, Icon } from 'antd';
-import './App.css';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+// prettier-ignore
+import { AppBar, Badge, Divider, Drawer as DrawerMui, Hidden, IconButton, List, ListItem, ListItemIcon, ListItemText, Toolbar, Typography, withWidth } from "@material-ui/core";
+import { Theme } from "@material-ui/core/styles";
+import { isWidthUp, WithWidth } from "@material-ui/core/withWidth";
+import FormatListNumberedIcon from "@material-ui/icons/FormatListNumbered";
+import HomeIcon from "@material-ui/icons/Home";
+import MenuIcon from "@material-ui/icons/Menu";
+import { makeStyles } from "@material-ui/styles";
+import * as React from "react";
+import { connect } from "react-redux";
+import { Route, RouteComponentProps, Router } from "react-router-dom";
+import { history } from "./configureStore";
+import { Question } from "./model/model";
+import HomePage from "./pages/HomePage";
+import CreatePage from "./pages/CreatePage";
+import { RootState } from "./reducers/index";
+import withRoot from "./withRoot";
 
-import { Foo, Bar } from './Pages';
+function Routes() {
+	const classes = useStyles();
 
-import Home from './layout/Home';
-import Create from './layout/Create';
-import Survey from './layout/Survey';
-import Share from './layout/Share';
-import Result from './layout/Result';
-
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <Router>
-          <div>
-            <nav>
-              <Menu mode="horizontal">
-                <Menu.Item key='home'>
-                  <Link to="/">Home</Link>
-                </Menu.Item>
-                <Menu.Item key='create'>
-                  <Link to="/create">Create</Link>
-                </Menu.Item>
-                <Menu.Item key='survey'>
-                  <Link to="/survey/h24s2e">Survey</Link>
-                </Menu.Item>
-                <Menu.Item key='share'>
-                  <Link to="/share/h24s2e">Share</Link>
-                </Menu.Item>
-                <Menu.Item key='result'>
-                  <Link to="/result/h24s2e">Résult</Link>
-                </Menu.Item>
-              </Menu>
-            </nav>
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/create" component={Create} />
-              <Route exact path="/survey/:id" component={Survey} />
-              <Route exact path="/share/:id" component={Share} />
-              <Route exact path="/result/:id" component={Result} />
-            </Switch>
-          </div>
-        </Router>
-      </div>
-    );
-  }
+	return (
+		<div className={classes.content}>
+			<Route exact={true} path="/" component={HomePage} />
+			<Route exact={true} path="/home" component={HomePage} />
+			<Route exact={true} path="/create" component={CreatePage} />
+		</div>
+	);
 }
 
-export default App;
+
+interface Props extends RouteComponentProps<void>, WithWidth {
+	questionList: Question[];
+}
+
+function App(props?: Props) {
+	const classes = useStyles();
+
+	if (!props) {
+		return null;
+	}
+
+	return (
+		<Router history={history}>
+			<div className={classes.root}>
+				<div className={classes.appFrame}>
+					<AppBar className={classes.appBar}>
+						<Toolbar>
+		
+							<Typography
+								variant="h6"
+								color="inherit"
+								noWrap={isWidthUp("sm", props.width)}
+							>
+							Agora
+							</Typography>
+						</Toolbar>
+					</AppBar>
+					<Routes />
+				</div>
+			</div>
+		</Router>
+	);
+}
+
+const useStyles = makeStyles((theme: Theme) => ({
+	root: {
+		width: "100%",
+		height: "100%",
+		zIndex: 1,
+		overflow: "hidden",
+	},
+	appFrame: {
+		position: "relative",
+		display: "flex",
+		width: "100%",
+		height: "100%",
+	},
+	appBar: {
+		zIndex: theme.zIndex.drawer + 1,
+		position: "absolute",
+	},
+	navIconHide: {
+		[theme.breakpoints.up("md")]: {
+			display: "none",
+		},
+	},
+	content: {
+		backgroundColor: theme.palette.background.default,
+		width: "100%",
+		height: "calc(100% - 56px)",
+		marginTop: 56,
+		[theme.breakpoints.up("sm")]: {
+			height: "calc(100% - 64px)",
+			marginTop: 64,
+		},
+	},
+}));
+
+function mapStateToProps(state: RootState) {
+	return {
+		questionList: state.questionList,
+	};
+}
+
+export default connect(mapStateToProps)(withRoot(withWidth()(App)));
