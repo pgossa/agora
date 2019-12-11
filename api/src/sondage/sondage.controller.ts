@@ -40,7 +40,7 @@ export class SondageController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async callCreateSondage(@Body() sondageDto: SondageDto) {
+  callCreateSondage(@Body() sondageDto: SondageDto) {
     this.sondageService.createSondage(sondageDto);
     return this.sondageService.getSondages();
   }
