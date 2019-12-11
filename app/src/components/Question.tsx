@@ -13,7 +13,7 @@ interface Props {
 }
 
 function Question(props: Props) {
-	const { open, onClose } = props;
+	const { open, onClose } = props; 
 	const classes = useStyles();
 	const [questionText, setQuestionText] = React.useState("");
 	const [questionType, setQuestionType] = React.useState<QuestionType>(QuestionType.QCM);
