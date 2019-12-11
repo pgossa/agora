@@ -21,3 +21,6 @@ npm-debug.log
 
 # dist
 /dist
+
+# doc
+/documentation

@@ -3,6 +3,8 @@
 #Install depencies
 npm install 
 
+npm run compodoc
+
 #Start server
 npm run start:dev &
 
