@@ -2,34 +2,37 @@ import { Logger as LoggerService } from '@nestjs/common';
 
 export class Logger extends LoggerService {
   log(message: Array<string>|string) {
-    if(typeof message === "string") {
-      this.separator();
-      super.log(message);
+    this.handlerMessage('log', message);
+  }
+
+  error(message: Array<string>, trace: string) {
+    this.handlerMessage('error', message, trace);
+  }
+
+  warn(message: string) {
+    this.handlerMessage('warn', message);
+  }
+
+  debug(message: string) {
+    this.handlerMessage('debug', message);
+  }
+
+  verbose(message: string) {
+    this.handlerMessage('verbose', message);
+  }
+
+  handlerMessage(action: string, message: Array<string>|string, trace?: string) {
+    if (typeof message === "string") {
+      super[action](message, trace);
     } else {
       this.separator();
       message.forEach(element => {
-        super.log(element);
+        super[action](element, trace);
       });
     }
   }
 
-  error(message: string, trace: string) {
-    super.error(message, trace);
-  }
-
-  warn(message: string) {
-    super.warn(message);
-  }
-
-  debug(message: string) {
-    super.debug(message);
-  }
-
-  verbose(message: string) {
-    super.verbose(message);
-  }
-
   separator() {
-    super.log(`-----------------------------------`);
+    super.verbose(`-----------------------------------`);
   }
 }

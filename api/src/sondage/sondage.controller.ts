@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Param, Body, Delete, HttpException, HttpStatus, HttpCode} from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, Delete, HttpException, HttpStatus, HttpCode, Req} from '@nestjs/common';
 import { SondageService } from './sondage.service';
-import { DeviceService } from 'src/service/device.service';
+import { DeviceService } from '../service/device.service';
 import { SondageDto } from './sondage.dto';
-import { Sondage } from './sondage.interface';
+import { Request } from 'express';
 
 @Controller('sondage')
 export class SondageController {
@@ -13,23 +13,43 @@ export class SondageController {
 
   @Get()
   @HttpCode(HttpStatus.FOUND)
-  callGetSondages(): Sondage[]|HttpException {
+  callGetSondages(@Req() request: Request): object|HttpException {
     let allSondages = this.sondageService.getSondages();
     if (allSondages) {
-      return allSondages;
+      return this.deviceService.returnJsonDataAndLog(
+        request.url,
+        request.method,
+        HttpStatus.FOUND,
+        allSondages
+      );
     } else {
-      throw new HttpException('No ressources found', HttpStatus.NOT_FOUND);
+      this.deviceService.throwExceptionAndLog(
+        request.url,
+        request.method,
+        HttpStatus.NOT_FOUND,
+        `No ressources found`
+      );
     }
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.FOUND)
-  callGetSondage(@Param('id') id: string): Sondage|HttpException {
+  callGetSondage(@Param('id') id: string, @Req() request: Request): object|HttpException {
     let oneSondage = this.sondageService.getSondage(id);
     if (oneSondage) {
-      return oneSondage;
+      return this.deviceService.returnJsonDataAndLog(
+        request.url,
+        request.method,
+        HttpStatus.FOUND,
+        oneSondage
+      );
     } else {
-      throw new HttpException(`No ressource found with id ${id}`, HttpStatus.NOT_FOUND);
+      this.deviceService.throwExceptionAndLog(
+        request.url,
+        request.method,
+        HttpStatus.NOT_FOUND,
+        `No ressources found with id: ${id}`
+      );
     }
   }
 
@@ -47,11 +67,24 @@ export class SondageController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  callDeleteSondage(@Param('id') id: string): object|HttpException {
+  callDeleteSondage(@Param('id') id: string, @Req() request: Request): object|HttpException {
     if (this.sondageService.deleteSondage(id)) {
-      return this.deviceService.generateJsonMessage('Ressource deleted', HttpStatus.OK);
+      return this.deviceService.returnJsonDataAndLog(
+        request.url,
+        request.method,
+        HttpStatus.OK,
+        this.deviceService.generateJsonMessage(
+          'Ressource deleted',
+          HttpStatus.OK
+        )
+      );
     } else {
-      throw new HttpException(`No ressource found with id ${id}`, HttpStatus.NOT_FOUND);
+      this.deviceService.throwExceptionAndLog(
+        request.url,
+        request.method,
+        HttpStatus.NOT_FOUND,
+        `No ressources found with id: ${id}`
+      );
     }
   }
 }
