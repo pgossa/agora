@@ -3,16 +3,16 @@ export  enum QuestionType {
     QCM = 'qcm',
     TEXT = 'text'
 }
-export interface ResponseQuestion {
+export interface QuestionAnswer {
     id: number,
     text: string,
-    count: number
+    count?: number
 }
 export interface Question {
     id: number,
     type: QuestionType,
     text: string,
-    responses: ResponseQuestion[]
+    answers: QuestionAnswer[]
 }
 export interface Sondage {
     id: string;

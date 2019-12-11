@@ -6,7 +6,7 @@ import { RouteComponentProps, Redirect } from "react-router-dom";
 import HomeBox from "../components/HomeBox";
 import { RootState } from "../reducers";
 
-interface Props extends RouteComponentProps<void> { }
+interface Props extends RouteComponentProps<void> {}
 
 function HomePage(props: Props) {
 	const classes = useStyles();
@@ -18,53 +18,56 @@ function HomePage(props: Props) {
 
 	return (
 		<div className={classes.root}>
-			<Typography variant="h4" gutterBottom>
-				You have {questionList.length} TODOs in your list!
-			</Typography>
-			<div className={classes.centerContainer}>
-					<Button
-						className={classes.button}
-						onClick={() => {
-							props.history.push('/create');
-						}}
-						variant="outlined"
-						color="primary"
-					>
-						<Grid
-							container
-							direction="column"
-							justify="flex-end"
-							alignItems="center"
+			<Grid
+				container
+				direction="column"
+				justify="flex-end"
+				alignItems="center"
+			>
+				<Grid item>
+					<div className={classes.centerContainer}>
+						<Button
+							className={classes.button}
+							onClick={() => {
+								props.history.push("/create");
+							}}
+							variant="outlined"
+							color="primary"
+							size="large"
+							fullWidth={true}
 						>
-							<Grid item>
-								Create your own survey
-						</Grid>
-							<Grid item>
-								Very quickly
-						</Grid>
-						</Grid>
-					</Button>
-				<Button
-					className={classes.button}
-					onClick={onButtonClick}
-					variant="outlined"
-					color="primary"
-				>
-					<Grid
-						container
-						direction="column"
-						justify="flex-end"
-						alignItems="center"
-					>
-						<Grid item>
-							Complete a survey
-						</Grid>
-						<Grid item>
-							You must have code
-						</Grid>
-					</Grid>
-				</Button>
-			</div>
+							<Grid
+								container
+								direction="column"
+								justify="flex-end"
+								alignItems="center"
+							>
+								<Grid item>Create your own survey</Grid>
+								<Grid item>Very quickly</Grid>
+							</Grid>
+						</Button>
+
+						<Button
+							className={classes.button}
+							onClick={onButtonClick}
+							variant="outlined"
+							color="primary"
+							size="large"
+							fullWidth={true}
+						>
+							<Grid
+								container
+								direction="column"
+								justify="flex-end"
+								alignItems="center"
+							>
+								<Grid item>Complete a survey</Grid>
+								<Grid item>You must have code</Grid>
+							</Grid>
+						</Button>
+					</div>
+				</Grid>
+			</Grid>
 		</div>
 	);
 }

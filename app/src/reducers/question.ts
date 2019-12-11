@@ -1,7 +1,7 @@
-import { Action, ActionType, Question } from "../model/model";
+import { Action, ActionType, Question, QuestionType } from "../model/model";
 import createReducer from "./createReducer";
 
-export const questionList = createReducer<Question[]>([], {
+export const questionList = createReducer<Question[]>([{id:1, text:'', type:QuestionType.QCM, answers: []}], {
 	[ActionType.ADD_QUESTION](state: Question[], action: Action<Question>) {
 		return [...state, action.payload];
 	},
