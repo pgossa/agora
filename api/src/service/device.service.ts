@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class FormatService {
+export class DeviceService {
   generateJsonMessage(message: string, httpCode: number): object {
     return {
       "statusCode": httpCode,
