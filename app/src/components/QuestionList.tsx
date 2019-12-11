@@ -1,5 +1,5 @@
 // prettier-ignore
-import { Checkbox, IconButton, Paper, Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/core";
+import { Checkbox, IconButton, Paper, Table, TableBody, TableCell, TableHead, TableRow, Grid } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { makeStyles } from "@material-ui/styles";
 import * as React from "react";
@@ -8,8 +8,9 @@ import { useActions } from "../actions";
 import * as TodoActions from "../actions/question";
 import { Question } from "../model/model";
 import { RootState } from "../reducers";
+import QuestionDialog from "./Question";
 
-interface Props {}
+interface Props { }
 
 function QuestionList(props: Props) {
 	const classes = useStyles();
@@ -18,51 +19,30 @@ function QuestionList(props: Props) {
 
 	console.log(questionList);
 	return (
-		<Paper className={classes.paper}>
-			<Table className={classes.table}>
-				<TableHead>
-					<TableRow>
-						<TableCell padding="default">Text</TableCell>
-						<TableCell padding="default">Delete</TableCell>
-					</TableRow>
-				</TableHead>
-				<TableBody>
-					{questionList.map((n: Question) => {
-						return (
-							<TableRow
-								key={n.id}
-								hover
-							>
-					
-								<TableCell padding="none">{n.text}</TableCell>
-								<TableCell padding="none">
-									<IconButton
-										aria-label="Delete"
-										color="default"
-										onClick={() =>
-											questionActions.deleteQuestion(n.id)
-										}
-									>
-										<DeleteIcon />
-									</IconButton>
-								</TableCell>
-							</TableRow>
-						);
-					})}
-				</TableBody>
-			</Table>
-		</Paper>
+		<div >
+			<Grid
+				container
+				direction="column"
+				justify="space-around"
+				alignItems="center"
+				spacing={2}
+			>
+				{questionList.map((n: Question) => {
+					return (
+						<QuestionDialog open={true} onClose={() => { }} />
+
+					);
+				})}
+			</Grid>
+		</div>
 	);
 }
 
 const useStyles = makeStyles({
 	paper: {
 		width: "100%",
-		minWidth: 260,
+		// minWidth: 260,
 		display: "inline-block",
-	},
-	table: {
-		width: "100%",
 	},
 });
 

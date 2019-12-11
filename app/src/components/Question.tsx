@@ -1,9 +1,11 @@
 // prettier-ignore
-import { Button, Dialog, DialogActions, DialogTitle, TextField } from "@material-ui/core";
+import { Button, Dialog, DialogActions, DialogTitle, TextField, ButtonGroup, Grid, IconButton, Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import * as React from "react";
 import { useActions } from "../actions";
 import * as QuestionActions from "../actions/question";
+import { QuestionType, ResponseQuestion } from "../model/model";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 interface Props {
 	open: boolean;
@@ -13,49 +15,89 @@ interface Props {
 function Question(props: Props) {
 	const { open, onClose } = props;
 	const classes = useStyles();
-	const [newQuestionText, setNewQuestionText] = React.useState("");
+	const [questionText, setQuestionText] = React.useState("");
+	const [questionType, setQuestionType] = React.useState<QuestionType>(QuestionType.QCM);
+	const [questionResponse, setQuestionResponse] = React.useState<ResponseQuestion[]>([{ id: 1, text: '', count: 0 }, { id: 2, text: '', count: 0 }]);
+
 	const questionActions = useActions(QuestionActions);
 
 	const handleClose = () => {
 		questionActions.addQuestion({
 			id: Math.random(),
 			completed: false,
-			text: newQuestionText,
+			text: questionText,
 		});
 		onClose();
 
 		// reset todo text if user reopens the dialog
-		setNewQuestionText("");
+		setQuestionText("");
 	};
 
-	const handleChange = (event: any) => {
-		setNewQuestionText(event.target.value);
+	const handleChangeText = (event: any) => {
+		setQuestionText(event.target.value);
 	};
+
+	const handleChangeType = (type: QuestionType) => {
+		setQuestionType(type);
+	};
+
+
 
 	return (
-		<Dialog open={open} onClose={handleClose}>
-			<DialogTitle>Add a new TODO</DialogTitle>
-			<TextField
-				id="multiline-flexible"
-				multiline
-				value={newQuestionText}
-				onChange={handleChange}
-				className={classes.textField}
-			/>
-			<DialogActions>
-				<Button color="primary" onClick={handleClose}>
-					OK
-				</Button>
-			</DialogActions>
-		</Dialog>
+
+		<Grid item xl={12} md={12} xs={12}>
+			<Paper>
+				<Grid container
+					direction='column'
+					justify="space-around"
+					alignItems="center"
+					spacing={0}
+				>
+					<TextField id="question" label="Question" variant="outlined" />
+					<br />
+					<ButtonGroup fullWidth aria-label="full width outlined button group">
+						<Button onClick={() => handleChangeType(QuestionType.QCM)}>Qcm</Button>
+						<Button onClick={() => handleChangeType(QuestionType.TEXT)}>Text</Button>
+					</ButtonGroup>
+
+					{questionType === QuestionType.QCM ? (
+						<div>
+							QCM response
+					<Grid
+								container
+								direction="column"
+								justify="space-around"
+								alignItems="center"
+								spacing={1}
+							>
+								{questionResponse.map((response, index) => {
+									return (
+										<Grid item>
+											<TextField id={"response" + index} label='Response' variant='outlined' />
+											<IconButton
+												aria-label="Delete"
+												color="default"
+												onClick={() => { }}
+											>
+												<DeleteIcon />
+											</IconButton>
+										</Grid>
+									)
+								})}
+							</Grid>
+						</div>
+					) : (
+							<div>
+								TEXT response
+					</div>
+						)}
+				</Grid>
+			</Paper>
+		</Grid>
 	);
 }
 
 const useStyles = makeStyles({
-	textField: {
-		width: "80%",
-		margin: 20,
-	},
 });
 
 export default Question;

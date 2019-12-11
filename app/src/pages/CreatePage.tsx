@@ -7,7 +7,7 @@ import TodoTable from "../components";
 import Question from "../components/Question";
 import { Sondage } from "../model/model";
 
-interface Props extends RouteComponentProps<void> {}
+interface Props extends RouteComponentProps<void> { }
 
 function CreatePage(props: Props) {
 	const classes = useStyles();
@@ -24,14 +24,21 @@ function CreatePage(props: Props) {
 
 
 	return (
-		<Grid container className={classes.root}>
-			<Question open={open} onClose={handleClose} />
-			<Grid item xs={6}>
+		<Grid className={classes.root} container
+			direction="column"
+			justify="center"
+			alignItems="center"
+			spacing={2}>
+
+			<Grid item xs={12}>
 				<Typography variant="h4" gutterBottom>
-					Todo List
+					Create your survey.
+				</Typography>
+				<Typography variant="h5" gutterBottom>
+					Complete the below field to create your poll
 				</Typography>
 			</Grid>
-			<Grid item xs={6}>
+			<Grid item xl={12} md={12} xs={12}>
 				<div className={classes.buttonContainer}>
 					<Button
 						className={classes.button}
@@ -43,7 +50,7 @@ function CreatePage(props: Props) {
 					</Button>
 				</div>
 			</Grid>
-			<Grid item xs={12}>
+			<Grid item xl={12} md={12} xs={12}>
 				<TodoTable />
 			</Grid>
 		</Grid>
@@ -58,6 +65,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 			paddingLeft: 15,
 			paddingRight: 15,
 		},
+		flexGrow: 1,
 	},
 
 	buttonContainer: {

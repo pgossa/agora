@@ -1,7 +1,7 @@
 
 export  enum QuestionType {
-    BOOLEAN = 'boolean',
-    NUMBER = 'number'
+    QCM = 'qcm',
+    TEXT = 'text'
 }
 export interface ResponseQuestion {
     id: number,
