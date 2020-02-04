@@ -8,47 +8,47 @@ import { Request } from 'express';
 export class SondageController {
   constructor(
     private readonly sondageService: SondageService,
-    private readonly deviceService: DeviceService
+    private readonly deviceService: DeviceService,
   ) {}
 
   @Get()
   @HttpCode(HttpStatus.FOUND)
   callGetSondages(@Req() request: Request): object|HttpException {
-    let allSondages = this.sondageService.getSondages();
+    const allSondages = this.sondageService.getSondages();
     if (allSondages) {
       return this.deviceService.returnJsonDataAndLog(
         request.url,
         request.method,
         HttpStatus.FOUND,
-        allSondages
+        allSondages,
       );
     } else {
       this.deviceService.throwExceptionAndLog(
         request.url,
         request.method,
         HttpStatus.NOT_FOUND,
-        `No ressources found`
+        `No ressources found`,
       );
     }
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.FOUND)
-  callGetSondage(@Param('id') id: string, @Req() request: Request): object|HttpException {
-    let oneSondage = this.sondageService.getSondage(id);
+  callGetSondage(@Param('id') id: number, @Req() request: Request): object|HttpException {
+    const oneSondage = this.sondageService.getSondage(id);
     if (oneSondage) {
       return this.deviceService.returnJsonDataAndLog(
         request.url,
         request.method,
         HttpStatus.FOUND,
-        oneSondage
+        oneSondage,
       );
     } else {
       this.deviceService.throwExceptionAndLog(
         request.url,
         request.method,
         HttpStatus.NOT_FOUND,
-        `No ressources found with id: ${id}`
+        `No ressources found with id: ${id}`,
       );
     }
   }
@@ -67,7 +67,7 @@ export class SondageController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  callDeleteSondage(@Param('id') id: string, @Req() request: Request): object|HttpException {
+  callDeleteSondage(@Param('id') id: number, @Req() request: Request): object|HttpException {
     if (this.sondageService.deleteSondage(id)) {
       return this.deviceService.returnJsonDataAndLog(
         request.url,
@@ -75,15 +75,15 @@ export class SondageController {
         HttpStatus.OK,
         this.deviceService.generateJsonMessage(
           'Ressource deleted',
-          HttpStatus.OK
-        )
+          HttpStatus.OK,
+        ),
       );
     } else {
       this.deviceService.throwExceptionAndLog(
         request.url,
         request.method,
         HttpStatus.NOT_FOUND,
-        `No ressources found with id: ${id}`
+        `No ressources found with id: ${id}`,
       );
     }
   }

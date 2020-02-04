@@ -9,9 +9,9 @@ export class SondageService {
     return this.sondages.length > 0 ? this.sondages : null;
   }
 
-  getSondage(id: string): Sondage|null {
+  getSondage(id: number): Sondage|null {
     let sondage = null;
-    let indexSondageToGet = this.findIndexById(id);
+    const indexSondageToGet = this.findIndexById(id);
     if (null !== indexSondageToGet) {
       sondage = this.sondages[indexSondageToGet];
     }
@@ -19,12 +19,14 @@ export class SondageService {
   }
 
   createSondage(sondage: Sondage) {
+    console.log(this.sondages)
+    sondage.id = this.sondages.length > 0 ? this.sondages[this.sondages.length - 1].id + 1 : 1;
     this.sondages.push(sondage);
   }
 
-  deleteSondage(id: string): boolean {
+  deleteSondage(id: number): boolean {
     let status = false;
-    let indexSondageToDelete = this.findIndexById(id);
+    const indexSondageToDelete = this.findIndexById(id);
     if (null !== indexSondageToDelete) {
       this.sondages.splice(indexSondageToDelete, 1);
       status = true;
@@ -32,9 +34,9 @@ export class SondageService {
     return status;
   }
 
-  private findIndexById(id: string): number|null {
+  private findIndexById(id: number): number|null {
     let index = null;
-    let length = this.sondages.length;
+    const length = this.sondages.length;
     for (let i = 0; i < length; i++) {
       if (id === this.sondages[i].id) {
         index = i;

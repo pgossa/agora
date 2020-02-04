@@ -19,7 +19,5 @@ interface Question {
 }
 
 export class SondageDto {
-    @IsUUID()
-    id: string;
     questions: Question[];
 }

@@ -37,6 +37,7 @@ function CreatePage(props: Props) {
 
 	const handleClickCreatePool = () => {
 		console.log(questionList);
+		console.log(JSON.stringify(questionList))
 	}
 	return (
 		<Grid

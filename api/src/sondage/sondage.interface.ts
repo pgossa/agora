@@ -17,6 +17,6 @@ interface Question {
 }
 
 export interface Sondage {
-    id: string;
+    id?: number;
     questions: Question[];
 }
