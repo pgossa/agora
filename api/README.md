@@ -5,11 +5,6 @@
 * Go in the api folder and then run :
 
 ```
-npm run start:dev
-```
-So now the server is running,
-In a second terminal run:
-```
 npm run start
 ```
 Now the api is running on localhost:3000

@@ -1,14 +1,7 @@
 import { Module } from '@nestjs/common';
-import { join } from 'path';
-import { GraphQLModule } from '@nestjs/graphql';
-import { CatsModule } from './cats/cats.module';
+import { SondageModule } from './sondage/sondage.module';
 
 @Module({
-  imports: [
-    CatsModule,
-    GraphQLModule.forRoot({
-      typePaths: [join(__dirname, '**', '*.graphql')],
-    }),
-  ],
+    imports: [SondageModule]
 })
 export class ApplicationModule {}
