@@ -1,0 +1,103 @@
+// prettier-ignore
+import { Button, Dialog, DialogActions, DialogTitle, TextField, ButtonGroup, Grid, IconButton, Paper, Fab } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
+import * as React from "react";
+import { useActions } from "../actions";
+import * as QuestionActions from "../actions/question";
+import { QuestionType, QuestionAnswer, Question } from "../model/model";
+import DeleteIcon from "@material-ui/icons/Delete";
+import Answer from "./Answer";
+import AddIcon from "@material-ui/icons/Add";
+
+interface Props {
+	answers: QuestionAnswer[];
+	updateAnswers: (answers: QuestionAnswer[]) => void;
+}
+
+export default function QCMAnswer({ answers, updateAnswers }: Props) {
+	const classes = useStyles();
+	const [localAnswers, setLocalAnswers] = React.useState<QuestionAnswer[]>(
+		answers.length < 2
+			? [
+					{ id: 1, text: "" },
+					{ id: 2, text: "" },
+			  ]
+			: answers
+	);
+
+	const updateAnswer = (answer: QuestionAnswer) => {
+		const newLocalAnswers: QuestionAnswer[] = localAnswers.map(
+			(localAnswer: QuestionAnswer) => {
+				if (localAnswer.id == answer.id) {
+					localAnswer.text = answer.text;
+				}
+				return localAnswer;
+			}
+		);
+		setLocalAnswers(newLocalAnswers);
+		updateAnswers(newLocalAnswers);
+	};
+
+	const removeAnswer = (id: number) => {
+		const newLocalAnswers: QuestionAnswer[] = localAnswers.filter(
+			answer => {
+				return answer.id !== id;
+			}
+		);
+		setLocalAnswers(newLocalAnswers);
+		updateAnswers(newLocalAnswers);
+	};
+
+	const handleClickAdd = () => {
+		const id = localAnswers.length > 0 ? localAnswers[localAnswers.length-1].id+1 : 1;
+		const newAnswer: QuestionAnswer = { id, text: ""}
+		setLocalAnswers([...localAnswers, newAnswer]);
+		updateAnswers([...localAnswers, newAnswer]);
+	}
+
+	console.log(localAnswers);
+	return (
+		<div>
+			<Grid
+				container
+				direction="column"
+				justify="space-around"
+				alignItems='flex-start'
+				spacing={1}
+			>
+				<Grid item>QCM answer</Grid>
+				{localAnswers.map((answer, index) => {
+					return (
+						<Grid item>
+							<Answer
+								answer={answer}
+								update={updateAnswer}
+								remove={index > 1 ? removeAnswer : undefined}
+							/>
+						</Grid>
+					);
+				})}
+			</Grid>
+			<Grid
+				container
+				direction="column"
+				justify="space-around"
+				alignItems="flex-end"
+				spacing={0}
+			>
+				<Grid item>
+					<Fab
+						color="primary"
+						aria-label="add"
+						size="small"
+						onClick={() => handleClickAdd()}
+					>
+						<AddIcon fontSize="small" />
+					</Fab>
+				</Grid>
+			</Grid>
+		</div>
+	);
+}
+
+const useStyles = makeStyles({});
