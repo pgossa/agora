@@ -4,4 +4,4 @@ import { SondageModule } from './sondage/sondage.module';
 @Module({
     imports: [SondageModule]
 })
-export class ApplicationModule {}
+export class AppModule {}
