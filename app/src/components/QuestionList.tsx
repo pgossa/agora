@@ -13,11 +13,25 @@ import QuestionEdit from "./QuestionEdit";
 import AddIcon from "@material-ui/icons/Add";
 interface Props {
 	list: Question[];
+	updateList: (list: Question[]) => void;
 }
 
-function QuestionList({ list }: Props) {
+function QuestionList({ list, updateList }: Props) {
 	const classes = useStyles();
 
+	const updateQuestion = (question: Question) => {
+		const foundIndex = list.findIndex(q => q.id === question.id);
+		let newList = list;
+		newList[foundIndex] = question;
+		updateList(newList);
+	};
+
+	const removeQuestion = (id: number) => {
+		const newList = list.filter(question => {
+			return question.id !== id;
+		});
+		updateList(newList);
+	};
 	return (
 		<div className={classes.root}>
 			<Grid
@@ -27,22 +41,15 @@ function QuestionList({ list }: Props) {
 				alignItems="center"
 				spacing={2}
 			>
-				{list.map((question: Question) => {
-					return <QuestionEdit question={question}/>;
+				{list.map((question: Question, index: number) => {
+					return (
+						<QuestionEdit
+							question={question}
+							update={updateQuestion}
+							remove={index > 0 ? removeQuestion : undefined}
+						/>
+					);
 				})}
-			</Grid>
-			<Grid
-				container
-				direction="column"
-				justify="space-around"
-				alignItems="flex-end"
-				spacing={0}
-			>
-				<Grid item>
-					<Fab color="primary" aria-label="add" size="small">
-						<AddIcon fontSize="small" />
-					</Fab>
-				</Grid>
 			</Grid>
 		</div>
 	);

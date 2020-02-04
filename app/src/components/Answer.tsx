@@ -8,12 +8,12 @@ import { QuestionType, QuestionAnswer, Question } from "../model/model";
 import DeleteIcon from "@material-ui/icons/Delete";
 
 interface Props {
-	answer: QuestionAnswer,
-	updateAnswer: (answer: QuestionAnswer) => void;
-	deleteAnswer: (answer: QuestionAnswer) => void;
+	answer: QuestionAnswer;
+	update: (answer: QuestionAnswer) => void;
+	remove?: (id: number) => void;
 }
 
-export default function Answer({ answer, updateAnswer, deleteAnswer }: Props) {
+export default function Answer({ answer, update, remove }: Props) {
 	const classes = useStyles();
 
 	const [textLocal, setTextLocal] = React.useState<string>(answer.text);
@@ -22,20 +22,16 @@ export default function Answer({ answer, updateAnswer, deleteAnswer }: Props) {
 		const value: string = event.target.value;
 		let newAnswer = answer;
 		newAnswer.text = value;
-		updateAnswer(newAnswer);
+		update(newAnswer);
 		setTextLocal(value);
 	};
-
-	const handleDelete = () => {
-		deleteAnswer(answer);
-	}
 
 	return (
 		<Grid
 			container
 			direction="row"
 			justify="space-around"
-			alignItems="center"
+			alignItems='flex-start'
 			spacing={1}
 		>
 			<Grid item>
@@ -47,16 +43,18 @@ export default function Answer({ answer, updateAnswer, deleteAnswer }: Props) {
 					onChange={handleChangeText}
 				/>
 			</Grid>
-			<Grid item>
-				<IconButton
-					aria-label="Delete"
-					color="default"
-					size="small"
-					onClick={() => {handleDelete()}}
-				>
-					<DeleteIcon fontSize="small" />
-				</IconButton>
-			</Grid>
+			{remove ? (
+				<Grid item>
+					<IconButton
+						aria-label="Delete"
+						color="default"
+						size="small"
+						onClick={() => remove(answer.id)}
+					>
+						<DeleteIcon fontSize="small" />
+					</IconButton>
+				</Grid>
+			) : null}
 		</Grid>
 	);
 }

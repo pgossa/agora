@@ -10,9 +10,11 @@ import QCMAnswer from "./QCMAnswer";
 
 interface Props {
 	question: Question;
+	update: (question: Question) => void;
+	remove?: (id: number) => void;
 }
 
-export default function QuestionEdit({ question }: Props) {
+export default function QuestionEdit({ question, update, remove }: Props) {
 	const classes = useStyles();
 	const [questionText, setQuestionText] = React.useState<string>(
 		question.text
@@ -20,9 +22,9 @@ export default function QuestionEdit({ question }: Props) {
 	const [questionType, setQuestionType] = React.useState<QuestionType>(
 		question.type
 	);
-	const [questionAnswers, setQuestionAnswers] = React.useState<
-		QuestionAnswer[]
-	>(question.answers);
+	const [answers, setAnswers] = React.useState<QuestionAnswer[]>(
+		question.answers
+	);
 
 	const handleChangeText = (event: any) => {
 		setQuestionText(event.target.value);
@@ -33,11 +35,33 @@ export default function QuestionEdit({ question }: Props) {
 	};
 
 	const updateAnswers = (answers: QuestionAnswer[]) => {
-		setQuestionAnswers(answers);
-	}
+		let newQuestion = question;
+		newQuestion.answers = answers;
+		update(newQuestion);
+	};
 
 	return (
 		<Grid item xl={12} md={12} xs={12}>
+			<Grid
+				container
+				direction="row"
+				justify="flex-end"
+				alignItems="center"
+				spacing={1}
+			>
+				{remove ? (
+					<Grid item>
+						<IconButton
+							aria-label="Delete"
+							color="default"
+							size="small"
+							onClick={() => remove(question.id)}
+						>
+							<DeleteIcon color="secondary" />
+						</IconButton>
+					</Grid>
+				) : null}
+			</Grid>
 			<Grid
 				container
 				direction="column"
@@ -61,16 +85,6 @@ export default function QuestionEdit({ question }: Props) {
 								value={questionText}
 								onChange={handleChangeText}
 							/>
-						</Grid>
-						<Grid item>
-							<IconButton
-								aria-label="Delete"
-								color="default"
-								size="small"
-								onClick={() => {}}
-							>
-								<DeleteIcon color='secondary'/>
-							</IconButton>
 						</Grid>
 					</Grid>
 				</Grid>
@@ -102,7 +116,10 @@ export default function QuestionEdit({ question }: Props) {
 				</ButtonGroup>
 
 				{questionType === QuestionType.QCM ? (
-					<QCMAnswer answers={questionAnswers} updateAnswers={updateAnswers}/>
+					<QCMAnswer
+						answers={answers}
+						updateAnswers={updateAnswers}
+					/>
 				) : (
 					<div>TEXT answer</div>
 				)}

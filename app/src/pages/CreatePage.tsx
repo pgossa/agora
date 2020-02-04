@@ -7,26 +7,37 @@ import QuestionList from "../components";
 import { Sondage, Question, QuestionType } from "../model/model";
 import AddIcon from "@material-ui/icons/Add";
 import QuestionEdit from "../components/QuestionEdit";
+import { useState, useEffect } from "react";
+// import { questionList } from "../reducers/question";
 
 interface Props extends RouteComponentProps<void> {}
 
 function CreatePage(props: Props) {
 	const classes = useStyles();
-	const [open, setOpen] = React.useState(false);
-	const [sondage, setSondage] = React.useState<Sondage>();
-	const [quesitonList, setQuestionList] = React.useState<Question[]>([
+	const [open, setOpen] = useState(false);
+	const [sondage, setSondage] = useState<Sondage>();
+	const [questionList, setQuestionList] = useState<Question[]>([
 		{ id: 1, text: "Test 1", type: QuestionType.QCM, answers: [] },
-		// { id: 2, text: "Test 2", type: QuestionType.QCM, answers: [] },
-		// { id: 3, text: "Test 3", type: QuestionType.QCM, answers: [] },
 	]);
-	const handleClose = () => {
-		setOpen(false);
+
+	const handleClickAdd = () => {
+		const id =
+			questionList.length > 0
+				? questionList[questionList.length - 1].id + 1
+				: 1;
+		const newQuestion: Question = {
+			id,
+			text: "",
+			type: QuestionType.QCM,
+			answers: [],
+		};
+		setQuestionList([...questionList, newQuestion]);
 	};
 
-	const handleAddTodo = () => {
-		setOpen(true);
-	};
 
+	const handleClickCreatePool = () => {
+		console.log(questionList);
+	}
 	return (
 		<Grid
 			className={classes.root}
@@ -36,16 +47,41 @@ function CreatePage(props: Props) {
 			alignItems="center"
 			spacing={2}
 		>
-			<Grid item xs={12}>
+			<Grid item>
 				<Typography variant="h4" gutterBottom>
 					Create your survey.
 				</Typography>
 				<Typography variant="h5" gutterBottom>
 					Complete the below field to create your poll
 				</Typography>
-			</Grid>		
-			<Grid item xl={12} md={12} xs={12}>
-				<QuestionList list={quesitonList} />
+			</Grid>
+			<Grid item>
+				<QuestionList
+					list={questionList}
+					updateList={setQuestionList}
+				/>
+			</Grid>
+			<Grid
+				container
+				direction="column"
+				justify="space-around"
+				alignItems="center"
+				spacing={2}
+			>
+				<Grid item>
+					<Fab
+						color="primary"
+						aria-label="add"
+						onClick={() => handleClickAdd()}
+					>
+						<AddIcon />
+					</Fab>
+				</Grid>
+				<Grid item>
+					<Button variant="contained" color="secondary" onClick={() => handleClickCreatePool()}>
+						Create your pool
+					</Button>
+				</Grid>
 			</Grid>
 		</Grid>
 	);
