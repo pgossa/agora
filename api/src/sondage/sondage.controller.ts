@@ -3,6 +3,7 @@ import { SondageService } from './sondage.service';
 import { DeviceService } from '../service/device.service';
 import { SondageDto } from './sondage.dto';
 import { Request } from 'express';
+import { Question } from './sondage.interface';
 
 @Controller('sondage')
 export class SondageController {
@@ -13,7 +14,7 @@ export class SondageController {
 
   @Get()
   @HttpCode(HttpStatus.FOUND)
-  callGetSondages(@Req() request: Request): object|HttpException {
+  callGetSondages(@Req() request: Request){
     const allSondages = this.sondageService.getSondages();
     if (allSondages) {
       return this.deviceService.returnJsonDataAndLog(
@@ -32,10 +33,10 @@ export class SondageController {
     }
   }
 
-  @Get(':id')
+  @Get(':code')
   @HttpCode(HttpStatus.FOUND)
-  callGetSondage(@Param('id') id: number, @Req() request: Request): object|HttpException {
-    const oneSondage = this.sondageService.getSondage(id);
+  callGetSondage(@Param('code') code: string, @Req() request: Request): object|HttpException {
+    const oneSondage = this.sondageService.getSondage(code);
     if (oneSondage) {
       return this.deviceService.returnJsonDataAndLog(
         request.url,
@@ -48,7 +49,7 @@ export class SondageController {
         request.url,
         request.method,
         HttpStatus.NOT_FOUND,
-        `No ressources found with id: ${id}`,
+        `No ressources found with id: ${code}`,
       );
     }
   }
@@ -60,9 +61,10 @@ export class SondageController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  callCreateSondage(@Body() sondageDto: SondageDto) {
-    this.sondageService.createSondage(sondageDto);
-    return this.sondageService.getSondages();
+  callCreateSondage(@Body() questions: Question[]) {
+    const sondage = this.sondageService.createSondage(questions);
+    console.log(JSON.stringify(sondage));
+    return JSON.stringify(sondage);
   }
 
   @Delete(':id')
