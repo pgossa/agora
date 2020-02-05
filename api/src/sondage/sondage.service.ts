@@ -1,29 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { Sondage, Question } from './sondage.interface';
+import { Survey } from './survey';
 
 
 const CODE_LENGTH = 5;
 @Injectable()
 export class SondageService {
   private readonly sondages: Sondage[] = [];
+  private readonly surveys: Survey[] = [];
 
-  getSondages(): Sondage[] | null {
-    return this.sondages.length > 0 ? this.sondages : null;
+  getSurveys(): Survey[] | null {
+    return this.surveys.length > 0 ? this.surveys : null;
   }
 
-  getSondage(codee: string): Sondage | null {
-    return this.sondages.find(({ code }) => code === codee);
+  getSurvey(code: string): Survey | null {
+    
+    return this.surveys.find((survey) => {
+      return survey.code === code;
+    });
   }
 
-  createSondage(questions: Question[]) {
+  createSurvey(questions: Question[]) {
 
     const id = this.sondages.length > 0 ? this.sondages[this.sondages.length - 1].id + 1 : 1;
     const code = this.gernerateCode(CODE_LENGTH);
-    const sondage: Sondage = {
-      id, code, questions,
-    }
-    this.sondages.push(sondage);
-    return sondage;
+    const createAt = new Date();
+    const survey: Survey = new Survey({ id, code, questions, createAt });
+    this.surveys.push(survey);
+
+    return survey;
   }
 
   deleteSondage(id: number): boolean {
@@ -59,7 +64,7 @@ export class SondageService {
 
   gernerateCode(length) {
     let newCode = this.makeid(length);
-    while (this.sondages.find(({ code }) => code === newCode)) {
+    while (this.surveys.find(({ code }) => code === newCode)) {
       newCode = this.makeid(length);
     }
     return newCode;

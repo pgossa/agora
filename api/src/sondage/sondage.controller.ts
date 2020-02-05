@@ -1,11 +1,13 @@
-import { Controller, Get, Post, Param, Body, Delete, HttpException, HttpStatus, HttpCode, Req} from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, Delete, HttpException, HttpStatus, HttpCode, Req, UseInterceptors, ClassSerializerInterceptor} from '@nestjs/common';
 import { SondageService } from './sondage.service';
 import { DeviceService } from '../service/device.service';
 import { SondageDto } from './sondage.dto';
 import { Request } from 'express';
 import { Question } from './sondage.interface';
 
-@Controller('sondage')
+
+@UseInterceptors(ClassSerializerInterceptor)
+@Controller('survey')
 export class SondageController {
   constructor(
     private readonly sondageService: SondageService,
@@ -14,14 +16,14 @@ export class SondageController {
 
   @Get()
   @HttpCode(HttpStatus.FOUND)
-  callGetSondages(@Req() request: Request){
-    const allSondages = this.sondageService.getSondages();
-    if (allSondages) {
+  getSurveys(@Req() request: Request){
+    const surveys = this.sondageService.getSurveys();
+    if (surveys) {
       return this.deviceService.returnJsonDataAndLog(
         request.url,
         request.method,
         HttpStatus.FOUND,
-        allSondages,
+        surveys,
       );
     } else {
       this.deviceService.throwExceptionAndLog(
@@ -35,14 +37,14 @@ export class SondageController {
 
   @Get(':code')
   @HttpCode(HttpStatus.FOUND)
-  callGetSondage(@Param('code') code: string, @Req() request: Request): object|HttpException {
-    const oneSondage = this.sondageService.getSondage(code);
-    if (oneSondage) {
+  getSurvey(@Param('code') code: string, @Req() request: Request): object|HttpException {
+    const survey = this.sondageService.getSurvey(code);
+    if (survey) {
       return this.deviceService.returnJsonDataAndLog(
         request.url,
         request.method,
         HttpStatus.FOUND,
-        oneSondage,
+        survey,
       );
     } else {
       this.deviceService.throwExceptionAndLog(
@@ -61,10 +63,8 @@ export class SondageController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  callCreateSondage(@Body() questions: Question[]) {
-    const sondage = this.sondageService.createSondage(questions);
-    console.log(JSON.stringify(sondage));
-    return JSON.stringify(sondage);
+  createSurvey(@Body() questions: Question[]) {
+    return this.sondageService.createSurvey(questions);
   }
 
   @Delete(':id')
