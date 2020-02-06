@@ -6,9 +6,7 @@ import { RouteComponentProps } from "react-router-dom";
 import QuestionList from "../components";
 import { Sondage, Question, QuestionType } from "../model/model";
 import AddIcon from "@material-ui/icons/Add";
-import QuestionEdit from "../components/QuestionEdit";
 import { useState, useEffect } from "react";
-// import { questionList } from "../reducers/question";
 
 interface Props extends RouteComponentProps<void> {}
 
@@ -17,7 +15,7 @@ function CreatePage(props: Props) {
 	const [open, setOpen] = useState(false);
 	const [sondage, setSondage] = useState<Sondage>();
 	const [questionList, setQuestionList] = useState<Question[]>([
-		{ id: 1, text: "Test 1", type: QuestionType.QCM, answers: [] },
+		{ id: 1, text: "", type: QuestionType.QCM, answers: [] },
 	]);
 
 	const handleClickAdd = () => {
@@ -80,7 +78,7 @@ function CreatePage(props: Props) {
 				</Grid>
 				<Grid item>
 					<Button variant="contained" color="secondary" onClick={() => handleClickCreatePool()}>
-						Create your pool
+						Create your survey
 					</Button>
 				</Grid>
 			</Grid>

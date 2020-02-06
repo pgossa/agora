@@ -36,8 +36,8 @@ export default function Answer({ answer, update, remove }: Props) {
 		>
 			<Grid item>
 				<TextField
-					id={"response" + answer.id}
-					label="Response"
+					id={"answer" + answer.id}
+					label="Answer"
 					variant="outlined"
 					value={textLocal}
 					onChange={handleChangeText}

@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { QuestionEntity, QuestionType } from './question.entity';
 import { AnswerEntity } from './answer.entity';
+import { v4 as Uuid } from 'uuid';
 
 const CODE_LENGTH = 5;
 @Injectable()
@@ -33,10 +34,10 @@ export class SondageService {
   async createSurvey(questions: Question[]) {
 
     const code = await this.gernerateCode(CODE_LENGTH);
-
     const newSurvey = new SurveyEntity();
 
     newSurvey.code = code;
+    newSurvey.uuid = Uuid();
 
     newSurvey.questions = questions.map((question, indexQuestion) => {
       const newQuestion = new QuestionEntity();
@@ -57,7 +58,7 @@ export class SondageService {
   }
 
   async addAnswer(code: string, questionId: number, text: string) {
-    text = text.toLowerCase()
+    text = text.toLowerCase();
     const question = await this.questionRepository.findOne({
       where:
       {
@@ -69,7 +70,7 @@ export class SondageService {
     if (!question) {
       throw new ConflictException('not found');
     }
-    let answerIndex = undefined;
+    let answerIndex;
     if (question.answers.length > 0) {
       answerIndex = question.answers.findIndex(q => q.text === text);
     }
@@ -105,12 +106,41 @@ export class SondageService {
     return true;
   }
 
-  async deleteSurvey(code: string) {
-    const survey = await this.surveyRepository.findOne({ where: { code } });
+  async deleteSurvey(uuid: string) {
+    const survey = await this.surveyRepository.findOne({ where: { uuid } });
     if (!survey) {
       throw new ConflictException('not found');
     }
     return this.surveyRepository.remove(survey);
+  }
+
+  async resetSurvey(uuid: string) {
+    const survey = await this.surveyRepository.findOne({ where: { uuid } });
+    if (!survey) {
+      throw new ConflictException('not found');
+    }
+    survey.questions = survey.questions.map((question) => {
+      const newQuestion = question;
+      if (question.answers) {
+        switch (newQuestion.type) {
+          case QuestionType.QCM:
+            newQuestion.answers = newQuestion.answers.map((answer) => {
+              const newAnswer = answer;
+              newAnswer.count = 0;
+              return newAnswer;
+            });
+            break;
+          case QuestionType.TEXT:
+            delete newQuestion.answers;
+            break;
+
+          default:
+            break;
+        }
+      }
+      return newQuestion;
+    });
+    return await this.surveyRepository.save(survey);
   }
 
   async deleteSurveys() {

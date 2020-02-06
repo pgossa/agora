@@ -9,6 +9,12 @@ export class SurveyEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
+    // TODO change to exclude
+    // @Exclude()
+    @Column()
+    uuid: string;
+
+
     @Column({
       unique: true,
     })

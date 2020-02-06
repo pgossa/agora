@@ -56,7 +56,7 @@ export class SondageController {
     }
   }
 
-  @Post(':code/:questionId')
+  @Post('answer/:code/:questionId')
   addAnswer(@Param('code') code: string, @Param('questionId') questionId: number, @Body() answer) {
     if (answer.id) {
       return this.sondageService.incrementAnswer(code, questionId, answer.id);
@@ -71,10 +71,15 @@ export class SondageController {
     return this.sondageService.createSurvey(questions);
   }
 
-  @Delete(':code')
+  @Post('reset/:uuid')
+  resetSurvey(@Param('uuid') uuid: string) {
+    return this.sondageService.resetSurvey(uuid);
+  }
+
+  @Delete(':uuid')
   @HttpCode(HttpStatus.OK)
-  async deleteSurvey(@Param('code') code: string, @Req() request: Request): Promise<object | HttpException> {
-    if (await this.sondageService.deleteSurvey(code)) {
+  async deleteSurvey(@Param('uuid') uuid: string, @Req() request: Request): Promise<object | HttpException> {
+    if (await this.sondageService.deleteSurvey(uuid)) {
       return this.deviceService.returnJsonDataAndLog(
         request.url,
         request.method,
@@ -89,7 +94,7 @@ export class SondageController {
         request.url,
         request.method,
         HttpStatus.NOT_FOUND,
-        `No ressources found with code: ${code}`,
+        `No ressources found with code: ${uuid}`,
       );
     }
   }
