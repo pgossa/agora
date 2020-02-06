@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Body, Delete, HttpException, HttpStatus, HttpCode, Req, UseInterceptors, ClassSerializerInterceptor} from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, Delete, HttpException, HttpStatus, HttpCode, Req, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
 import { SondageService } from './sondage.service';
 import { DeviceService } from '../service/device.service';
 import { SondageDto } from './sondage.dto';
@@ -12,12 +12,12 @@ export class SondageController {
   constructor(
     private readonly sondageService: SondageService,
     private readonly deviceService: DeviceService,
-  ) {}
+  ) { }
 
   @Get()
   @HttpCode(HttpStatus.FOUND)
-  getSurveys(@Req() request: Request){
-    const surveys = this.sondageService.getSurveys();
+  async getSurveys(@Req() request: Request) {
+    const surveys = await this.sondageService.getSurveys();
     if (surveys) {
       return this.deviceService.returnJsonDataAndLog(
         request.url,
@@ -37,8 +37,8 @@ export class SondageController {
 
   @Get(':code')
   @HttpCode(HttpStatus.FOUND)
-  getSurvey(@Param('code') code: string, @Req() request: Request): object|HttpException {
-    const survey = this.sondageService.getSurvey(code);
+  async getSurvey(@Param('code') code: string, @Req() request: Request): Promise<object | HttpException> {
+    const survey = await this.sondageService.getSurvey(code);
     if (survey) {
       return this.deviceService.returnJsonDataAndLog(
         request.url,
@@ -51,14 +51,18 @@ export class SondageController {
         request.url,
         request.method,
         HttpStatus.NOT_FOUND,
-        `No ressources found with id: ${code}`,
+        `No ressources found with code: ${code}`,
       );
     }
   }
 
-  @Post(':sondageId/question/:questionId')
-  incrementSondageResponse(@Param() params, @Body() response): string {
-    return `On donne la response "${response.text}" à la question ${params.questionId} du sondage ${params.sondageId}`;
+  @Post(':code/:questionId')
+  addAnswer(@Param('code') code: string, @Param('questionId') questionId: number, @Body() answer) {
+    if (answer.id) {
+      return this.sondageService.incrementAnswer(code, questionId, answer.id);
+    } else if (answer.text) {
+      return this.sondageService.addAnswer(code, questionId, answer.text);
+    }
   }
 
   @Post()
@@ -67,10 +71,10 @@ export class SondageController {
     return this.sondageService.createSurvey(questions);
   }
 
-  @Delete(':id')
+  @Delete(':code')
   @HttpCode(HttpStatus.OK)
-  callDeleteSondage(@Param('id') id: number, @Req() request: Request): object|HttpException {
-    if (this.sondageService.deleteSondage(id)) {
+  async deleteSurvey(@Param('code') code: string, @Req() request: Request): Promise<object | HttpException> {
+    if (await this.sondageService.deleteSurvey(code)) {
       return this.deviceService.returnJsonDataAndLog(
         request.url,
         request.method,
@@ -85,7 +89,30 @@ export class SondageController {
         request.url,
         request.method,
         HttpStatus.NOT_FOUND,
-        `No ressources found with id: ${id}`,
+        `No ressources found with code: ${code}`,
+      );
+    }
+  }
+
+  @Delete()
+  @HttpCode(HttpStatus.OK)
+  async deleteSurveys(@Req() request: Request): Promise<object | HttpException> {
+    if (await this.sondageService.deleteSurveys()) {
+      return this.deviceService.returnJsonDataAndLog(
+        request.url,
+        request.method,
+        HttpStatus.OK,
+        this.deviceService.generateJsonMessage(
+          'Ressource deleted',
+          HttpStatus.OK,
+        ),
+      );
+    } else {
+      this.deviceService.throwExceptionAndLog(
+        request.url,
+        request.method,
+        HttpStatus.NOT_FOUND,
+        `No ressources found`,
       );
     }
   }

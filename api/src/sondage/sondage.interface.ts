@@ -13,7 +13,7 @@ export interface Question {
     id: number;
     type: QuestionType;
     text: string;
-    responses: ResponseQuestion[];
+    answers?: ResponseQuestion[];
 }
 
 export interface Sondage {
