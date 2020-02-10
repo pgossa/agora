@@ -2,8 +2,6 @@
 import { Button, Dialog, DialogActions, DialogTitle, TextField, ButtonGroup, Grid, IconButton, Paper, Fab } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import * as React from "react";
-import { useActions } from "../actions";
-import * as QuestionActions from "../actions/question";
 import { QuestionType, QuestionAnswer, Question } from "../model/model";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Answer from "./Answer";

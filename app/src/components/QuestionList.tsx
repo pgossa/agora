@@ -3,11 +3,7 @@ import { Checkbox, IconButton, Paper, Table, TableBody, TableCell, TableHead, Ta
 import DeleteIcon from "@material-ui/icons/Delete";
 import { makeStyles, createStyles } from "@material-ui/styles";
 import * as React from "react";
-import { useSelector } from "react-redux";
-import { useActions } from "../actions";
-import * as TodoActions from "../actions/question";
 import { Question } from "../model/model";
-import { RootState } from "../reducers";
 import QuestionEdit from "./QuestionEdit";
 
 import AddIcon from "@material-ui/icons/Add";

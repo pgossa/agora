@@ -2,8 +2,6 @@
 import { Button, Dialog, DialogActions, DialogTitle, TextField, ButtonGroup, Grid, IconButton, Paper, Fab } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import * as React from "react";
-import { useActions } from "../actions";
-import * as QuestionActions from "../actions/question";
 import { QuestionType, QuestionAnswer, Question } from "../model/model";
 import DeleteIcon from "@material-ui/icons/Delete";
 import QCMAnswer from "./QCMAnswer";
@@ -27,7 +25,11 @@ export default function QuestionEdit({ question, update, remove }: Props) {
 	);
 
 	const handleChangeText = (event: any) => {
-		setQuestionText(event.target.value);
+		const value = event.target.value;
+		setQuestionText(value);
+		let newQuestion = question;
+		newQuestion.text = value;
+		update(newQuestion);
 	};
 
 	const handleChangeType = (type: QuestionType) => {

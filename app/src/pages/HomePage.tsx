@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/styles";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { RouteComponentProps, Redirect } from "react-router-dom";
-import { RootState } from "../reducers";
 
 interface Props extends RouteComponentProps<void> {}
 

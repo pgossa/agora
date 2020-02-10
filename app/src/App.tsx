@@ -13,7 +13,6 @@ import { Route, RouteComponentProps, BrowserRouter as Router } from "react-route
 import { Question } from "./model/model";
 import HomePage from "./pages/HomePage";
 import CreatePage from "./pages/CreatePage";
-import { RootState } from "./reducers/index";
 import withRoot from "./withRoot";
 import ResultPage from "./pages/ResultPage";
 import AnswerPage from "./pages/AnswerPage";
@@ -101,11 +100,5 @@ const useStyles = makeStyles((theme: Theme) => ({
 		},
 	},
 }));
-
-function mapStateToProps(state: RootState) {
-	return {
-		questionList: state.questionList,
-	};
-}
 
 export default withRoot(withWidth()(App));
