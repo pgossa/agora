@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { SurveyEntity } from './sondage/survey.entity';
 import { QuestionEntity } from './sondage/question.entity';
 import { AnswerEntity } from './sondage/answer.entity';
+import { SurveyGateway } from './sondage/survey.gateway';
 
 @Module({
     imports: [

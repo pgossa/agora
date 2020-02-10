@@ -15,6 +15,8 @@ import HomePage from "./pages/HomePage";
 import CreatePage from "./pages/CreatePage";
 import { RootState } from "./reducers/index";
 import withRoot from "./withRoot";
+import ResultPage from "./pages/ResultPage";
+import AnswerPage from "./pages/AnswerPage";
 
 
 function Routes() {
@@ -25,6 +27,8 @@ function Routes() {
 			<Route exact={true} path="/" component={HomePage} />
 			<Route exact={true} path="/home" component={HomePage} />
 			<Route exact={true} path="/create" component={CreatePage} />
+			<Route exact={true} path="/answer" component={AnswerPage} />
+			<Route exact={true} path="/result" component={ResultPage} />
 		</div>
 	);
 }

@@ -14,7 +14,7 @@ export interface Question {
     text: string,
     answers: QuestionAnswer[]
 }
-export interface Sondage {
+export interface Survey {
     id: string;
     questions: Question[];
 }

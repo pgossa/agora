@@ -67,6 +67,7 @@ export class SondageService {
         // survey: { code },
       },
     });
+    console.log(question)
     if (!question) {
       throw new ConflictException('not found');
     }
@@ -74,16 +75,19 @@ export class SondageService {
     if (question.answers.length > 0) {
       answerIndex = question.answers.findIndex(q => q.text === text);
     }
-    if (answerIndex !== undefined) {
+
+    console.log(answerIndex)
+    if (answerIndex !== undefined && answerIndex !== -1) {
       question.answers[answerIndex].count = question.answers[answerIndex].count + 1;
     } else {
+      console.log('push')
       const newAnswer = new AnswerEntity();
       newAnswer.text = text;
       newAnswer.count = 1;
       question.answers.push(newAnswer);
     }
-
-    this.questionRepository.save(question);
+    console.log(question)
+    return await this.questionRepository.save(question);
   }
   async incrementAnswer(code: string, questionId: number, answerId: number) {
     const answer = await this.answerRepository.findOne({
@@ -102,8 +106,7 @@ export class SondageService {
       throw new ConflictException('not found');
     }
     answer.count = answer.count + 1;
-    this.answerRepository.save(answer);
-    return true;
+    return await this.answerRepository.save(answer);
   }
 
   async deleteSurvey(uuid: string) {

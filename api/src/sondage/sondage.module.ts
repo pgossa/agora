@@ -7,10 +7,11 @@ import { SurveyEntity } from './survey.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { QuestionEntity } from './question.entity';
 import { AnswerEntity } from './answer.entity';
+import { SurveyGateway } from './survey.gateway';
 
 @Module({
     imports: [TypeOrmModule.forFeature([SurveyEntity, QuestionEntity, AnswerEntity])],
     controllers: [SondageController],
-    providers: [SondageService, DeviceService, Logger]
+    providers: [SondageService, DeviceService, Logger, SurveyGateway]
 })
 export class SondageModule { }

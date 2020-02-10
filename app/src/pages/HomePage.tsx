@@ -9,10 +9,7 @@ interface Props extends RouteComponentProps<void> {}
 
 function HomePage(props: Props) {
 	const classes = useStyles();
-	const [boxColor, setBoxColor] = React.useState("red");
 
-	const onButtonClick = () =>
-		setBoxColor(boxColor === "red" ? "blue" : "red");
 
 	return (
 		<div className={classes.root}>
@@ -47,7 +44,9 @@ function HomePage(props: Props) {
 
 						<Button
 							className={classes.button}
-							onClick={onButtonClick}
+							onClick={() => {
+								props.history.push("/answer");
+							}}
 							variant="outlined"
 							color="primary"
 							size="large"

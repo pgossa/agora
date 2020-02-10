@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/styles";
 import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
 import QuestionList from "../components";
-import { Sondage, Question, QuestionType } from "../model/model";
+import { Survey, Question, QuestionType } from "../model/model";
 import AddIcon from "@material-ui/icons/Add";
 import { useState, useEffect } from "react";
 
@@ -13,7 +13,7 @@ interface Props extends RouteComponentProps<void> {}
 function CreatePage(props: Props) {
 	const classes = useStyles();
 	const [open, setOpen] = useState(false);
-	const [sondage, setSondage] = useState<Sondage>();
+	const [sondage, setSondage] = useState<Survey>();
 	const [questionList, setQuestionList] = useState<Question[]>([
 		{ id: 1, text: "", type: QuestionType.QCM, answers: [] },
 	]);

@@ -4,6 +4,7 @@ import { DeviceService } from '../service/device.service';
 import { SondageDto } from './sondage.dto';
 import { Request } from 'express';
 import { Question } from './sondage.interface';
+import { SurveyGateway } from './survey.gateway';
 
 
 @UseInterceptors(ClassSerializerInterceptor)
@@ -12,6 +13,7 @@ export class SondageController {
   constructor(
     private readonly sondageService: SondageService,
     private readonly deviceService: DeviceService,
+    private readonly surveyGateway: SurveyGateway,
   ) { }
 
   @Get()
@@ -36,7 +38,7 @@ export class SondageController {
   }
 
   @Get(':code')
-  @HttpCode(HttpStatus.FOUND)
+  // @HttpCode(HttpStatus.FOUND)
   async getSurvey(@Param('code') code: string, @Req() request: Request): Promise<object | HttpException> {
     const survey = await this.sondageService.getSurvey(code);
     if (survey) {
@@ -57,12 +59,16 @@ export class SondageController {
   }
 
   @Post('answer/:code/:questionId')
-  addAnswer(@Param('code') code: string, @Param('questionId') questionId: number, @Body() answer) {
+  async addAnswer(@Param('code') code: string, @Param('questionId') questionId: number, @Body() answer) {
+  
     if (answer.id) {
-      return this.sondageService.incrementAnswer(code, questionId, answer.id);
+      await this.sondageService.incrementAnswer(code, questionId, answer.id);
     } else if (answer.text) {
-      return this.sondageService.addAnswer(code, questionId, answer.text);
+      await this.sondageService.addAnswer(code, questionId, answer.text);
     }
+    const survey = await this.sondageService.getSurvey(code);
+    this.surveyGateway.sendSurvey(survey);
+    return true;
   }
 
   @Post()
