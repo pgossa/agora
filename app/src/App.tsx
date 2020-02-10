@@ -8,8 +8,8 @@ import MenuIcon from "@material-ui/icons/Menu";
 import { makeStyles } from "@material-ui/styles";
 import * as React from "react";
 import { connect } from "react-redux";
-import { Route, RouteComponentProps, Router } from "react-router-dom";
-import { history } from "./configureStore";
+import { Route, RouteComponentProps, BrowserRouter as Router } from "react-router-dom";
+// import { history } from "./configureStore";
 import { Question } from "./model/model";
 import HomePage from "./pages/HomePage";
 import CreatePage from "./pages/CreatePage";
@@ -42,7 +42,7 @@ function App(props?: Props) {
 	}
 
 	return (
-		<Router history={history}>
+		<Router>
 			<div className={classes.root}>
 				<div className={classes.appFrame}>
 					<AppBar className={classes.appBar}>
@@ -104,4 +104,4 @@ function mapStateToProps(state: RootState) {
 	};
 }
 
-export default connect(mapStateToProps)(withRoot(withWidth()(App)));
+export default withRoot(withWidth()(App));

@@ -10,7 +10,6 @@ interface Props extends RouteComponentProps<void> {}
 function HomePage(props: Props) {
 	const classes = useStyles();
 	const [boxColor, setBoxColor] = React.useState("red");
-	const questionList = useSelector((state: RootState) => state.questionList);
 
 	const onButtonClick = () =>
 		setBoxColor(boxColor === "red" ? "blue" : "red");
