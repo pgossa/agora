@@ -1,4 +1,4 @@
-import { Button, Grid, Typography, Fab } from "@material-ui/core";
+import { Button, Grid, Typography, Fab, Paper } from "@material-ui/core";
 import { Theme } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/styles";
 import * as React from "react";
@@ -9,6 +9,12 @@ import AddIcon from "@material-ui/icons/Add";
 import { useState, useEffect } from "react";
 
 import io from "socket.io-client";
+import axios from "axios";
+
+import Chart from "react-apexcharts";
+import ColumnChart from "../components/ColumnChart";
+import PieChart from "../components/PieChart";
+import WordCloud from "../components/WordCloud";
 
 const socket = io("http://localhost:3005");
 
@@ -16,8 +22,8 @@ interface Props extends RouteComponentProps<void> {}
 
 function ResultPage(props: Props) {
 	const classes = useStyles();
-
-	const [survey, setSurvey] = useState();
+	const code = "AUhy9";
+	const [survey, setSurvey] = useState<Survey | undefined>(undefined);
 	useEffect(() => {
 		socket.on("connect", function() {
 			console.log("Connected");
@@ -27,6 +33,18 @@ function ResultPage(props: Props) {
 				console.log("Identity:", response)
 			);
 		});
+
+		axios
+			.get("http://localhost:3005/survey/" + code)
+			.then(data => {
+				if (data.data) {
+					setSurvey(data.data);
+				}
+			})
+			.catch(error => {
+				console.log(error);
+			});
+
 		socket.on("users", function(data: any) {
 			console.log("users", data);
 		});
@@ -43,10 +61,44 @@ function ResultPage(props: Props) {
 		});
 	}, []);
 
-	if (survey) {
-		return <div>{JSON.stringify(survey)}</div>;
-	}
-	return <div>Practical Intro To WebSockets.</div>;
+	return (
+		<div>
+			Result.
+			{survey ? (
+				<Grid
+					container
+					direction="row"
+					justify="center"
+					alignItems="stretch"
+					spacing={2}
+				>
+					{survey.questions.map(question => {
+						return (
+							<Grid item>
+								<Paper className={classes.question} >
+									{question.text}
+									{question.type == QuestionType.QCM ? (
+										question.answers.length <= 2 ? (
+											<ColumnChart
+												answers={question.answers}
+											></ColumnChart>
+										) : (
+											<PieChart
+												answers={question.answers}
+											/>
+										)
+									) : null}
+									{question.type == QuestionType.TEXT ? (
+										<WordCloud answers={question.answers} />
+									) : null}
+								</Paper>
+							</Grid>
+						);
+					})}
+				</Grid>
+			) : null}
+		</div>
+	);
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -70,6 +122,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 	button: {
 		marginBottom: 15,
 	},
+	question: {
+		 width: '100%',
+		 height: '100%'
+	}
 }));
 
 export default ResultPage;

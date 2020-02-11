@@ -134,7 +134,7 @@ export class SondageService {
             });
             break;
           case QuestionType.TEXT:
-            delete newQuestion.answers;
+            newQuestion.answers = [];
             break;
 
           default:

@@ -35,8 +35,6 @@ function AnswerPage(props: Props) {
 	const code = "AUhy9";
 
 	useEffect(() => {
-	
-
 		socket.on("connect", function() {
 			console.log("Connected");
 			socket.emit("identity", 0, (response: any) =>
@@ -119,11 +117,9 @@ function AnswerPage(props: Props) {
 		>
 			<Grid item>
 				<Typography variant="h4" gutterBottom>
-					Create your survey.
+					Answer
 				</Typography>
-				<Typography variant="h5" gutterBottom>
-					Complete the below field to create your poll
-				</Typography>
+				<Typography variant="h5" gutterBottom></Typography>
 			</Grid>
 			{currentQuestion ? (
 				<>
