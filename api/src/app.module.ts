@@ -10,12 +10,10 @@ import { SurveyGateway } from './sondage/survey.gateway';
     imports: [
         TypeOrmModule.forRoot({
           type: 'mysql',
-          host: 'localhost', // Dev
-          port: 3305, // Dev
-          // host: 'agoradb', //Prod
-          // port: 3306, // Prod
+          host: 'localhost',
+          port: 3305,
           username: 'root',
-          password: 'root',
+          password: '',
           database: 'agora',
           entities: [SurveyEntity, QuestionEntity, AnswerEntity],
           synchronize: true,

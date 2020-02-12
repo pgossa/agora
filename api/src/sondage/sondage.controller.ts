@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Param, Body, Delete, HttpException, HttpStatus, HttpCode, Req, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
 import { SondageService } from './sondage.service';
 import { DeviceService } from '../service/device.service';
+import { MailerService } from '../service/mailer.service';
 import { SondageDto } from './sondage.dto';
 import { Request } from 'express';
 import { Question } from './sondage.interface';
@@ -13,6 +14,7 @@ export class SondageController {
   constructor(
     private readonly sondageService: SondageService,
     private readonly deviceService: DeviceService,
+    private readonly mailerService: MailerService,
     private readonly surveyGateway: SurveyGateway,
   ) { }
 
@@ -73,8 +75,10 @@ export class SondageController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  createSurvey(@Body() questions: Question[]) {
-    return this.sondageService.createSurvey(questions);
+  async createSurvey(@Body() questions: Question[]) {
+    const survey = await this.sondageService.createSurvey(questions);
+    this.mailerService.sendEmailAndLog(/*user email*/, survey.code);
+    return survey;
   }
 
   @Post('reset/:uuid')
