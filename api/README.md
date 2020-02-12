@@ -9,7 +9,7 @@ npm run start
 ```
 Now the api is running on localhost:3000
 
-# Build the API using dokcer
+# Build the API using docker
 
 * Go in the sondage folder
 * Use : 

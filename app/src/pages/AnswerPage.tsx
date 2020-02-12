@@ -24,7 +24,8 @@ import io from "socket.io-client";
 import axios from "axios";
 
 interface Props extends RouteComponentProps<void> {}
-const socket = io("http://localhost:3005");
+const socket = io("http://localhost:3005"); //Dev
+// const socket = io("http://agorapi:3005") // Prod
 function AnswerPage(props: Props) {
 	const classes = useStyles();
 
@@ -43,7 +44,8 @@ function AnswerPage(props: Props) {
 		});
 
 		axios
-			.get("http://localhost:3005/survey/" + code)
+			.get("http://localhost:3005/survey/" + code) // Dev
+			// .get("http://agorapi:3005/survey/" + code) // Prod
 			.then(data => {
 				if (data.data) {
 					setSurvey(data.data);

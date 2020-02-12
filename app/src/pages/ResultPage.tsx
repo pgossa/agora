@@ -16,7 +16,8 @@ import ColumnChart from "../components/ColumnChart";
 import PieChart from "../components/PieChart";
 import WordCloud from "../components/WordCloud";
 
-const socket = io("http://localhost:3005");
+const socket = io("http://localhost:3005"); // Dev
+// const socket = io("http://agorapi:3005") // Prod
 
 interface Props extends RouteComponentProps<void> {}
 
@@ -35,7 +36,8 @@ function ResultPage(props: Props) {
 		});
 
 		axios
-			.get("http://localhost:3005/survey/" + code)
+			.get("http://localhost:3005/survey/" + code) // Dev
+			// .get("http://agorapi:3005/survey/" + code) // Prod
 			.then(data => {
 				if (data.data) {
 					setSurvey(data.data);
