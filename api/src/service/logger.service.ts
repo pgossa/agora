@@ -5,7 +5,7 @@ export class Logger extends LoggerService {
     this.handlerMessage('log', message);
   }
 
-  error(message: Array<string>, trace: string) {
+  error(message: Array<string>, trace?: string) {
     this.handlerMessage('error', message, trace);
   }
 
