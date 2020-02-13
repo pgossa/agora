@@ -92,6 +92,7 @@ export default function QuestionEdit({ question, update, remove, check }: Props)
 								onChange={handleChangeText}
 								error={check && questionText.length == 0 ? true : undefined}
 								helperText={check && questionText.length == 0 ? 'Required': undefined}
+								fullWidth
 							/>
 						</Grid>
 					</Grid>

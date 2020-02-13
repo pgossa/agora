@@ -30,7 +30,7 @@ function QuestionList({ list, updateList, check }: Props) {
 		updateList(newList);
 	};
 	return (
-		<div className={classes.root}>
+		// <div className={classes.root}>
 			<Grid
 				container
 				direction="column"
@@ -49,7 +49,7 @@ function QuestionList({ list, updateList, check }: Props) {
 					);
 				})}
 			</Grid>
-		</div>
+		// {/* </div> */}
 	);
 }
 

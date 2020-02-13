@@ -6,21 +6,23 @@ import { RouteComponentProps } from "react-router-dom";
 import QuestionList from "../components";
 import { Survey, Question, QuestionType } from "../model/model";
 import AddIcon from "@material-ui/icons/Add";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import CreateSurveyDialog from "../components/CreateSurveyDialog";
+
+
 
 interface Props extends RouteComponentProps<void> {}
 
 function CreatePage(props: Props) {
 	const classes = useStyles();
-	const [open, setOpen] = useState(false);
-	const [sondage, setSondage] = useState<Survey>();
 	const [questionList, setQuestionList] = useState<Question[]>([
 		{ id: 1, text: "", type: QuestionType.QCM, answers: [] },
 	]);
 
 	const [check, setCheck] = useState<boolean>(false);
+
+
 
 	const handleClickAdd = () => {
 		const id =
@@ -39,7 +41,6 @@ function CreatePage(props: Props) {
 
 	return (
 		<Grid
-			className={classes.root}
 			container
 			direction="column"
 			justify="center"
@@ -47,6 +48,8 @@ function CreatePage(props: Props) {
 			spacing={2}
 		>
 			<Grid item>
+
+			
 				<Typography variant="h4" gutterBottom>
 					Create your survey.
 				</Typography>
@@ -73,6 +76,7 @@ function CreatePage(props: Props) {
 						color="primary"
 						aria-label="add"
 						onClick={() => handleClickAdd()}
+						
 					>
 						<AddIcon />
 					</Fab>
@@ -86,26 +90,7 @@ function CreatePage(props: Props) {
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
-	root: {
-		padding: 20,
-		[theme.breakpoints.down("md")]: {
-			paddingTop: 50,
-			paddingLeft: 15,
-			paddingRight: 15,
-		},
-		flexGrow: 1,
-		width: "100%",
-	},
 
-	buttonContainer: {
-		width: "100%",
-		display: "flex",
-		justifyContent: "flex-end",
-	},
-
-	button: {
-		marginBottom: 15,
-	},
 }));
 
 export default CreatePage;

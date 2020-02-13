@@ -14,7 +14,7 @@ import {
 import { Theme } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/styles";
 import * as React from "react";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, Redirect } from "react-router-dom";
 import QuestionList from "../components";
 import { Survey, Question, QuestionType, QuestionAnswer } from "../model/model";
 import AddIcon from "@material-ui/icons/Add";
@@ -22,24 +22,37 @@ import { useState, useEffect } from "react";
 
 import io from "socket.io-client";
 import axios from "axios";
+import { BASE_URL } from "../App";
 
 interface Props extends RouteComponentProps<void> {}
+
 const socket = io("http://localhost:3005"); //Dev
 // const socket = io("http://agorapi:3005") // Prod
+
 function AnswerPage(props: Props) {
 	const classes = useStyles();
 
 	const [survey, setSurvey] = useState<Survey | undefined>(undefined);
 	const [indexQuestion, setIndexQuestion] = useState(0);
-	const [value, setValue] = React.useState("");
+	const [value, setValue] = React.useState<string | string[]>("");
 
-	const [code, setCode] = useState<string | undefined>(undefined);
+	const [code, setCode] = useState<string>("");
 
 	const [state, setState] = useState<boolean | undefined>(undefined);
 
-	const [error, setError] = useState<boolean>(false);
+	const [error, setError] = useState<string | undefined>(undefined);
 
-	const handleChangeAnswer = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const [redirect, setRedirect] = useState<undefined | string>(undefined);
+
+	const handleChangeQCMAnswer = (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		setValue((event.target as HTMLInputElement).value);
+	};
+
+	const handleChangeTextAnswer = (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
 		setValue((event.target as HTMLInputElement).value);
 	};
 
@@ -69,7 +82,6 @@ function AnswerPage(props: Props) {
 				break;
 		}
 
-
 		socket.emit("answer", newAnswer);
 
 		if (survey && indexQuestion < survey.questions.length - 1) {
@@ -82,26 +94,57 @@ function AnswerPage(props: Props) {
 
 	const handleChangeCode = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setCode(event.target.value);
-		setError(false);
+		setError(undefined);
 	};
 
 	const handleClickStart = () => {
+		const localStorageSurveysAnswered = localStorage.getItem(
+			"surveysAnswered"
+		);
+		console.log(localStorageSurveysAnswered);
+		if (localStorageSurveysAnswered !== null) {
+			const surveyAnswered: string[] = JSON.parse(
+				localStorageSurveysAnswered
+			);
+			if (surveyAnswered.includes(code)) {
+				setError("You allready did this survey");
+				return false;
+			}
+		}
+
 		socket.on("connect", function() {
 			console.log("Connected");
 		});
 
 		axios
-			.get("http://localhost:3005/survey/" + code) // Dev
-			// .get("http://agorapi:3005/survey/" + code) // Prod
+			.get("/survey/" + code) // Dev
 			.then(data => {
 				if (data.data) {
 					setState(true);
 					setSurvey(data.data);
+
+					const localStorageSurveysAnswered = localStorage.getItem(
+						"surveysAnswered"
+					);
+					let newSurveyAnswered: string[] = [];
+					if (localStorageSurveysAnswered !== null) {
+						newSurveyAnswered = JSON.parse(
+							localStorageSurveysAnswered
+						);
+						newSurveyAnswered.push(code);
+					} else {
+						newSurveyAnswered = [code];
+					}
+
+					localStorage.setItem(
+						"surveysAnswered",
+						JSON.stringify(newSurveyAnswered)
+					);
 				}
 			})
 			.catch(error => {
 				console.log(error);
-				setError(true);
+				setError("Survey not found");
 			});
 	};
 
@@ -116,18 +159,22 @@ function AnswerPage(props: Props) {
 			? survey.questions[indexQuestion]
 			: undefined;
 
+	if (redirect) {
+		return <Redirect to={redirect} />;
+	}
+
 	if (!survey) {
 		return (
 			<Grid
-				className={classes.root}
 				container
-				direction="column"
-				justify="center"
-				alignItems="center"
 				spacing={2}
+				direction="column"
+				alignItems="center"
+				justify="center"
+				style={{ minHeight: "50vh" }}
 			>
 				<Grid item>
-					<form >
+					<form>
 						<Grid
 							container
 							direction="column"
@@ -141,26 +188,28 @@ function AnswerPage(props: Props) {
 									label="Enter survey code"
 									variant="outlined"
 									onChange={handleChangeCode}
-									required
-									error={error == true ? true : undefined}
+									error={error ? true : undefined}
 								/>
-									{error == true ? (
-							<FormHelperText error >Not found</FormHelperText>
-						) : null}
+								{error ? (
+									<FormHelperText error>
+										{error}
+									</FormHelperText>
+								) : null}
 							</Grid>
 							<Grid item>
 								<Button
 									onClick={() => {
-										// setState(true);
 										handleClickStart();
 									}}
-									variant='contained'
+									variant="contained"
+									disabled={
+										code.length < 5 ? true : undefined
+									}
 								>
 									Start
 								</Button>
 							</Grid>
 						</Grid>
-					
 					</form>
 				</Grid>
 			</Grid>
@@ -170,26 +219,34 @@ function AnswerPage(props: Props) {
 	if (state === false) {
 		return (
 			<Grid
-				className={classes.root}
 				container
-				direction="column"
-				justify="center"
-				alignItems="center"
 				spacing={2}
+				direction="column"
+				alignItems="center"
+				justify="center"
+				style={{ minHeight: "50vh" }}
 			>
 				<Grid item>Thanks for you answers</Grid>
+				<Grid item>
+					<Button
+						variant="contained"
+						onClick={() => setRedirect("/")}
+					>
+						Go back
+					</Button>
+				</Grid>
 			</Grid>
 		);
 	}
 
 	return (
 		<Grid
-			className={classes.root}
 			container
-			direction="column"
-			justify="center"
-			alignItems="center"
 			spacing={2}
+			direction="column"
+			alignItems="center"
+			justify="center"
+			style={{ minHeight: "50vh" }}
 		>
 			<Grid item>
 				<Typography variant="h4" gutterBottom>
@@ -224,7 +281,7 @@ function AnswerPage(props: Props) {
 												aria-label="answer"
 												name="answer"
 												value={value}
-												onChange={handleChangeAnswer}
+												onChange={handleChangeQCMAnswer}
 											>
 												{currentQuestion.answers.map(
 													(
@@ -254,7 +311,9 @@ function AnswerPage(props: Props) {
 												id={currentQuestion.id.toString()}
 												label="Answer"
 												variant="outlined"
-												onChange={handleChangeAnswer}
+												onChange={
+													handleChangeTextAnswer
+												}
 												value={value}
 											/>
 										</Grid>
@@ -286,26 +345,6 @@ function AnswerPage(props: Props) {
 const useStyles = makeStyles((theme: Theme) => ({
 	formControl: {
 		margin: theme.spacing(3),
-	},
-	root: {
-		padding: 20,
-		[theme.breakpoints.down("md")]: {
-			paddingTop: 50,
-			paddingLeft: 15,
-			paddingRight: 15,
-		},
-		flexGrow: 1,
-		width: "100%",
-	},
-
-	buttonContainer: {
-		width: "100%",
-		display: "flex",
-		justifyContent: "flex-end",
-	},
-
-	button: {
-		marginBottom: 15,
 	},
 }));
 

@@ -30,8 +30,7 @@ export default function ResultTools({ survey }: IProps) {
 
 	const handleDelete = () => {
 		axios
-			.delete("http://localhost:3005/survey/" + survey.uuid) // Dev
-			// .get("http://agorapi:3005/survey/" + code) // Prod
+			.delete("/survey/" + survey.uuid)
 			.then(data => {
 				setRedirect('/');
 			})
@@ -41,8 +40,7 @@ export default function ResultTools({ survey }: IProps) {
     
     const handleReset = () => {
 		axios
-			.post("http://localhost:3005/survey/reset/" + survey.uuid) // Dev
-			// .get("http://agorapi:3005/survey/" + code) // Prod
+			.post("/survey/reset/" + survey.uuid)
 			.then(data => {
 			})
 			.catch(error => {

@@ -8,7 +8,13 @@ import MenuIcon from "@material-ui/icons/Menu";
 import { makeStyles } from "@material-ui/styles";
 import * as React from "react";
 import { connect } from "react-redux";
-import { Route, RouteComponentProps, BrowserRouter as Router, Redirect } from "react-router-dom";
+import {
+	Route,
+	RouteComponentProps,
+	BrowserRouter as Router,
+	Redirect,
+	Link,
+} from "react-router-dom";
 // import { history } from "./configureStore";
 import { Question } from "./model/model";
 import HomePage from "./pages/HomePage";
@@ -18,6 +24,18 @@ import ResultPage from "./pages/ResultPage";
 import AnswerPage from "./pages/AnswerPage";
 import { useState } from "react";
 
+import axios from "axios";
+
+import io from "socket.io-client";
+
+export const BASE_URL = "http://localhost:3005";
+export const Socket = io("http://localhost:3005");
+
+//Prod
+// export const BASE_URL = 'http://agorapi:3005'
+// export const Socket = io("http://agorapi:3005");
+
+axios.defaults.baseURL = BASE_URL;
 
 function Routes() {
 	const classes = useStyles();
@@ -33,9 +51,7 @@ function Routes() {
 	);
 }
 
-
-interface Props extends RouteComponentProps<void>, WithWidth {
-}
+interface Props extends RouteComponentProps<void>, WithWidth {}
 
 function App(props: Props) {
 	const classes = useStyles();
@@ -43,23 +59,23 @@ function App(props: Props) {
 		return null;
 	}
 
-
 	return (
 		<Router>
 			<div className={classes.root}>
 				<div className={classes.appFrame}>
 					<AppBar className={classes.appBar}>
 						<Toolbar>
-		
-							<Typography
-								variant="h6"
-								color="inherit"
-								noWrap={isWidthUp("sm", props.width)}
-							>
-							Agora
-							</Typography>
+							<Link to="/" style={{ textDecoration: "none", color: 'white' }}>
+								<Typography variant="h6" color="inherit">
+									Agora
+								</Typography>
+							</Link>
 						</Toolbar>
 					</AppBar>
+					<br />
+					<br />
+					<br />
+					<br />
 					<Routes />
 				</div>
 			</div>
@@ -69,10 +85,9 @@ function App(props: Props) {
 
 const useStyles = makeStyles((theme: Theme) => ({
 	root: {
-		// width: "100%",
-		// height: "100%",
-		// zIndex: 1,
-		// overflow: "hidden",
+		width: "100%",
+		height: "100%",
+		zIndex: 1,
 	},
 	appFrame: {
 		// position: "relative",
@@ -90,14 +105,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 		// },
 	},
 	content: {
-		backgroundColor: theme.palette.background.default,
-		width: "100%",
-		height: "calc(100% - 56px)",
-		marginTop: 56,
-		[theme.breakpoints.up("sm")]: {
-			height: "calc(100% - 64px)",
-			marginTop: 64,
-		},
+		// backgroundColor: theme.palette.background.default,
+		// width: "100%",
+		// height: "calc(100% - 56px)",
+		// marginTop: 56,
+		// [theme.breakpoints.up("sm")]: {
+		// 	height: "calc(100% - 64px)",
+		// 	marginTop: 64,
+		// },
 	},
 }));
 

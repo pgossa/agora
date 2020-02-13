@@ -12,10 +12,12 @@ function HomePage(props: Props) {
 	return (
 		<div className={classes.root}>
 			<Grid
-				container
-				direction="column"
-				justify="flex-end"
-				alignItems="center"
+			  container
+			  spacing={0}
+			  direction="column"
+			  alignItems="center"
+			  justify="center"
+			  style={{ minHeight: '60vh' }}
 			>
 				<Grid item>
 					<div className={classes.centerContainer}>
