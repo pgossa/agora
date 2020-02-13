@@ -7,6 +7,8 @@ import QuestionList from "../components";
 import { Survey, Question, QuestionType } from "../model/model";
 import AddIcon from "@material-ui/icons/Add";
 import { useState, useEffect } from "react";
+import axios from "axios";
+import CreateSurveyDialog from "../components/CreateSurveyDialog";
 
 interface Props extends RouteComponentProps<void> {}
 
@@ -17,6 +19,8 @@ function CreatePage(props: Props) {
 	const [questionList, setQuestionList] = useState<Question[]>([
 		{ id: 1, text: "", type: QuestionType.QCM, answers: [] },
 	]);
+
+	const [check, setCheck] = useState<boolean>(false);
 
 	const handleClickAdd = () => {
 		const id =
@@ -33,10 +37,6 @@ function CreatePage(props: Props) {
 	};
 
 
-	const handleClickCreatePool = () => {
-		console.log(questionList);
-		console.log(JSON.stringify(questionList))
-	}
 	return (
 		<Grid
 			className={classes.root}
@@ -51,13 +51,14 @@ function CreatePage(props: Props) {
 					Create your survey.
 				</Typography>
 				<Typography variant="h5" gutterBottom>
-					Complete the below field to create your poll
+					Complete the below field to create your survey
 				</Typography>
 			</Grid>
 			<Grid item>
 				<QuestionList
 					list={questionList}
 					updateList={setQuestionList}
+					check={check}
 				/>
 			</Grid>
 			<Grid
@@ -77,9 +78,7 @@ function CreatePage(props: Props) {
 					</Fab>
 				</Grid>
 				<Grid item>
-					<Button variant="contained" color="secondary" onClick={() => handleClickCreatePool()}>
-						Create your survey
-					</Button>
+					<CreateSurveyDialog questionList={questionList}/>
 				</Grid>
 			</Grid>
 		</Grid>

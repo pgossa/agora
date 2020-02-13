@@ -15,6 +15,8 @@ export interface Question {
     answers: QuestionAnswer[]
 }
 export interface Survey {
+    code: string;
+    uuid: string;
     id: string;
     questions: Question[];
 }

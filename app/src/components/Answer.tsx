@@ -9,6 +9,7 @@ interface Props {
 	answer: QuestionAnswer;
 	update: (answer: QuestionAnswer) => void;
 	remove?: (id: number) => void;
+	check: boolean;
 }
 
 export default function Answer({ answer, update, remove }: Props) {

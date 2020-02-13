@@ -10,9 +10,10 @@ import AddIcon from "@material-ui/icons/Add";
 interface Props {
 	answers: QuestionAnswer[];
 	updateAnswers: (answers: QuestionAnswer[]) => void;
+	check: boolean;
 }
 
-export default function QCMAnswer({ answers, updateAnswers }: Props) {
+export default function QCMAnswer({ answers, updateAnswers, check }: Props) {
 	const classes = useStyles();
 	const [localAnswers, setLocalAnswers] = React.useState<QuestionAnswer[]>(
 		answers.length < 2
@@ -53,7 +54,6 @@ export default function QCMAnswer({ answers, updateAnswers }: Props) {
 		updateAnswers([...localAnswers, newAnswer]);
 	}
 
-	console.log(localAnswers);
 	return (
 		<div>
 			<Grid
@@ -71,6 +71,7 @@ export default function QCMAnswer({ answers, updateAnswers }: Props) {
 								answer={answer}
 								update={updateAnswer}
 								remove={index > 1 ? removeAnswer : undefined}
+								check={check}
 							/>
 						</Grid>
 					);

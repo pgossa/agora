@@ -33,33 +33,11 @@ function AnswerPage(props: Props) {
 	const [indexQuestion, setIndexQuestion] = useState(0);
 	const [value, setValue] = React.useState("");
 
-	const code = "AUhy9";
+	const [code, setCode] = useState<string | undefined>(undefined);
 
-	useEffect(() => {
-		socket.on("connect", function() {
-			console.log("Connected");
-			socket.emit("identity", 0, (response: any) =>
-				console.log("Identity:", response)
-			);
-		});
+	const [state, setState] = useState<boolean | undefined>(undefined);
 
-		axios
-			.get("http://localhost:3005/survey/" + code) // Dev
-			// .get("http://agorapi:3005/survey/" + code) // Prod
-			.then(data => {
-				if (data.data) {
-					setSurvey(data.data);
-				}
-			})
-			.catch(error => {
-				console.log(error);
-			});
-
-		socket.on("bb21e7f5-918e-45d5-9fbb-54c86ccefca8", function(data: any) {
-			console.log(data);
-			setSurvey(data);
-		});
-	}, []);
+	const [error, setError] = useState<boolean>(false);
 
 	const handleChangeAnswer = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setValue((event.target as HTMLInputElement).value);
@@ -69,7 +47,6 @@ function AnswerPage(props: Props) {
 		if (!survey) {
 			return null;
 		}
-
 		setValue("");
 
 		const currentQuestion = survey.questions[indexQuestion];
@@ -92,7 +69,6 @@ function AnswerPage(props: Props) {
 				break;
 		}
 
-		console.log(newAnswer);
 
 		socket.emit("answer", newAnswer);
 
@@ -100,13 +76,111 @@ function AnswerPage(props: Props) {
 			setIndexQuestion(indexQuestion + 1);
 		} else {
 			console.log("fini");
+			setState(false);
 		}
 	};
+
+	const handleChangeCode = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setCode(event.target.value);
+		setError(false);
+	};
+
+	const handleClickStart = () => {
+		socket.on("connect", function() {
+			console.log("Connected");
+		});
+
+		axios
+			.get("http://localhost:3005/survey/" + code) // Dev
+			// .get("http://agorapi:3005/survey/" + code) // Prod
+			.then(data => {
+				if (data.data) {
+					setState(true);
+					setSurvey(data.data);
+				}
+			})
+			.catch(error => {
+				console.log(error);
+				setError(true);
+			});
+	};
+
+	useEffect(() => {
+		if (state !== undefined) {
+			socket.emit("state", { state, code });
+		}
+	}, [state]);
 
 	const currentQuestion =
 		survey && survey.questions
 			? survey.questions[indexQuestion]
 			: undefined;
+
+	if (!survey) {
+		return (
+			<Grid
+				className={classes.root}
+				container
+				direction="column"
+				justify="center"
+				alignItems="center"
+				spacing={2}
+			>
+				<Grid item>
+					<form >
+						<Grid
+							container
+							direction="column"
+							justify="center"
+							alignItems="center"
+							spacing={2}
+						>
+							<Grid item>
+								<TextField
+									id="outlined-basic"
+									label="Enter survey code"
+									variant="outlined"
+									onChange={handleChangeCode}
+									required
+									error={error == true ? true : undefined}
+								/>
+									{error == true ? (
+							<FormHelperText error >Not found</FormHelperText>
+						) : null}
+							</Grid>
+							<Grid item>
+								<Button
+									onClick={() => {
+										// setState(true);
+										handleClickStart();
+									}}
+									variant='contained'
+								>
+									Start
+								</Button>
+							</Grid>
+						</Grid>
+					
+					</form>
+				</Grid>
+			</Grid>
+		);
+	}
+
+	if (state === false) {
+		return (
+			<Grid
+				className={classes.root}
+				container
+				direction="column"
+				justify="center"
+				alignItems="center"
+				spacing={2}
+			>
+				<Grid item>Thanks for you answers</Grid>
+			</Grid>
+		);
+	}
 
 	return (
 		<Grid

@@ -9,7 +9,6 @@ interface Props extends RouteComponentProps<void> {}
 function HomePage(props: Props) {
 	const classes = useStyles();
 
-
 	return (
 		<div className={classes.root}>
 			<Grid
@@ -40,7 +39,8 @@ function HomePage(props: Props) {
 								<Grid item>Very quickly</Grid>
 							</Grid>
 						</Button>
-
+						<br></br>
+						<br></br>
 						<Button
 							className={classes.button}
 							onClick={() => {

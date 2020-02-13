@@ -10,9 +10,10 @@ import AddIcon from "@material-ui/icons/Add";
 interface Props {
 	list: Question[];
 	updateList: (list: Question[]) => void;
+	check: boolean;
 }
 
-function QuestionList({ list, updateList }: Props) {
+function QuestionList({ list, updateList, check }: Props) {
 	const classes = useStyles();
 
 	const updateQuestion = (question: Question) => {
@@ -43,6 +44,7 @@ function QuestionList({ list, updateList }: Props) {
 							question={question}
 							update={updateQuestion}
 							remove={index > 0 ? removeQuestion : undefined}
+							check={check}
 						/>
 					);
 				})}

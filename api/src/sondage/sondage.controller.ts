@@ -60,9 +60,29 @@ export class SondageController {
     }
   }
 
+  @Get('admin/:uuid')
+  async getSurveyAdmin(@Param('uuid') uuid: string, @Req() request: Request): Promise<object | HttpException> {
+    const survey = await this.sondageService.getSurveyAdmin(uuid);
+    if (survey) {
+      return this.deviceService.returnJsonDataAndLog(
+        request.url,
+        request.method,
+        HttpStatus.FOUND,
+        survey,
+      );
+    } else {
+      this.deviceService.throwExceptionAndLog(
+        request.url,
+        request.method,
+        HttpStatus.NOT_FOUND,
+        `No ressources found with code: ${uuid}`,
+      );
+    }
+  }
+
   @Post('answer/:code/:questionId')
   async addAnswer(@Param('code') code: string, @Param('questionId') questionId: number, @Body() answer) {
-  
+
     if (answer.id) {
       await this.sondageService.incrementAnswer(code, questionId, answer.id);
     } else if (answer.text) {
@@ -75,15 +95,18 @@ export class SondageController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async createSurvey(@Body() questions: Question[]) {
+  async createSurvey(@Body() { questions, email }: { questions: Question[], email: string }) {
     const survey = await this.sondageService.createSurvey(questions);
-    this.mailerService.sendEmailAndLog(/*user email*/, survey.code);
+    this.mailerService.sendEmailAndLog(email, survey.uuid);
     return survey;
   }
 
   @Post('reset/:uuid')
-  resetSurvey(@Param('uuid') uuid: string) {
-    return this.sondageService.resetSurvey(uuid);
+  async resetSurvey(@Param('uuid') uuid: string) {
+    const survey = await this.sondageService.resetSurvey(uuid);
+    this.surveyGateway.sendSurvey(survey);
+    this.surveyGateway.resetSurveyUsers(survey.code);
+    return survey;
   }
 
   @Delete(':uuid')

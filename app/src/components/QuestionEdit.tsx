@@ -10,9 +10,10 @@ interface Props {
 	question: Question;
 	update: (question: Question) => void;
 	remove?: (id: number) => void;
+	check: boolean;
 }
 
-export default function QuestionEdit({ question, update, remove }: Props) {
+export default function QuestionEdit({ question, update, remove, check }: Props) {
 	const classes = useStyles();
 	const [questionText, setQuestionText] = React.useState<string>(
 		question.text
@@ -34,6 +35,9 @@ export default function QuestionEdit({ question, update, remove }: Props) {
 
 	const handleChangeType = (type: QuestionType) => {
 		setQuestionType(type);
+		let newQuestion = question;
+		newQuestion.type = type;
+		update(newQuestion);
 	};
 
 	const updateAnswers = (answers: QuestionAnswer[]) => {
@@ -86,6 +90,8 @@ export default function QuestionEdit({ question, update, remove }: Props) {
 								variant="outlined"
 								value={questionText}
 								onChange={handleChangeText}
+								error={check && questionText.length == 0 ? true : undefined}
+								helperText={check && questionText.length == 0 ? 'Required': undefined}
 							/>
 						</Grid>
 					</Grid>
@@ -121,6 +127,7 @@ export default function QuestionEdit({ question, update, remove }: Props) {
 					<QCMAnswer
 						answers={answers}
 						updateAnswers={updateAnswers}
+						check={check}
 					/>
 				) : (
 					<div>TEXT answer</div>

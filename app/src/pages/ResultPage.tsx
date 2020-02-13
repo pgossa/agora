@@ -1,8 +1,17 @@
-import { Button, Grid, Typography, Fab, Paper } from "@material-ui/core";
+import {
+	Button,
+	Grid,
+	Typography,
+	Fab,
+	Paper,
+	ExpansionPanel,
+	ExpansionPanelSummary,
+	ExpansionPanelDetails,
+} from "@material-ui/core";
 import { Theme } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/styles";
-import * as React from "react";
-import { RouteComponentProps } from "react-router-dom";
+import React from "react";
+import { RouteComponentProps, useParams } from "react-router-dom";
 import QuestionList from "../components";
 import { Survey, Question, QuestionType } from "../model/model";
 import AddIcon from "@material-ui/icons/Add";
@@ -15,6 +24,10 @@ import Chart from "react-apexcharts";
 import ColumnChart from "../components/ColumnChart";
 import PieChart from "../components/PieChart";
 import WordCloud from "../components/WordCloud";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ResultTools from "../components/ResultTools";
+import PeopleIcon from '@material-ui/icons/People';
+
 
 const socket = io("http://localhost:3005"); // Dev
 // const socket = io("http://agorapi:3005") // Prod
@@ -23,81 +36,146 @@ interface Props extends RouteComponentProps<void> {}
 
 function ResultPage(props: Props) {
 	const classes = useStyles();
-	const code = "AUhy9";
+
 	const [survey, setSurvey] = useState<Survey | undefined>(undefined);
+	const [surveyUsers, setSurveyUsers] = useState<
+		{ start: number; end: number } | undefined
+	>(undefined);
+
+	const [error, setError] = useState<boolean | undefined>(undefined);
+
+	const { uuid } = useParams();
+
 	useEffect(() => {
-		socket.on("connect", function() {
-			console.log("Connected");
-
-			socket.emit("events", { test: "test" });
-			socket.emit("identity", 0, (response: any) =>
-				console.log("Identity:", response)
-			);
-		});
-
-		axios
-			.get("http://localhost:3005/survey/" + code) // Dev
-			// .get("http://agorapi:3005/survey/" + code) // Prod
-			.then(data => {
-				if (data.data) {
-					setSurvey(data.data);
-				}
-			})
-			.catch(error => {
-				console.log(error);
+		if (uuid) {
+			socket.on("connect", function() {
+				console.log("Connected");
 			});
 
-		socket.on("users", function(data: any) {
-			console.log("users", data);
-		});
-		socket.on("exception", function(data: any) {
-			console.log("event", data);
-		});
-		socket.on("disconnect", function() {
-			console.log("Disconnected");
-		});
+			axios
+				.get("http://localhost:3005/survey/admin/" + uuid) // Dev
+				// .get("http://agorapi:3005/survey/" + code) // Prod
+				.then(data => {
+					if (data.data) {
+						setSurvey(data.data);
+						socket.on(data.data.code, function(data: any) {
+							setSurveyUsers(data);
+							console.log(data);
+						});
+					}
+				})
+				.catch(error => {
+					console.log(error);
+					setError(true);
+				});
 
-		socket.on("dcf25128-71ac-418b-a0e9-884c31a1a61a", function(data: any) {
-			console.log(data);
-			setSurvey(data);
-		});
-	}, []);
+			socket.on(uuid, function(data: any) {
+				setSurvey(data);
+			});
+		}
+	}, [uuid]);
+
+
+	if(error){
+		return <div>Survey not found</div>
+	}
+
 
 	return (
 		<div>
-			Result.
 			{survey ? (
-				<Grid
-					container
-					direction="row"
-					justify="center"
-					alignItems="stretch"
-					spacing={2}
-				>
-					{survey.questions.map(question => {
-						return (
-							<Grid item>
-								<Paper className={classes.question} >
-									{question.text}
-									{question.type == QuestionType.QCM ? (
-										question.answers.length <= 2 ? (
-											<ColumnChart
-												answers={question.answers}
-											></ColumnChart>
-										) : (
-											<PieChart
-												answers={question.answers}
-											/>
-										)
-									) : null}
-									{question.type == QuestionType.TEXT ? (
-										<WordCloud answers={question.answers} />
-									) : null}
-								</Paper>
-							</Grid>
-						);
-					})}
-				</Grid>
+				<>
+					<Grid
+						container
+						direction="row"
+						justify="flex-end"
+						alignItems="center"
+					>
+						<Grid item>
+							<ResultTools survey={survey} />
+						</Grid>
+					</Grid>
+					<Grid
+						container
+						direction="column"
+						justify="space-between"
+						alignItems="center"
+						spacing={2}
+					>
+						<Grid item>
+							Use the code:{" "}
+							<Typography variant="h4" gutterBottom>
+								{survey.code}
+							</Typography>
+						</Grid>
+						<Grid item>
+							<PeopleIcon/>
+							{surveyUsers ? (
+								<div>{surveyUsers.end}/{surveyUsers.start}</div>
+							): <div>0/0</div>}
+						</Grid>
+
+						<Grid item>
+							<ExpansionPanel>
+								<ExpansionPanelSummary
+									expandIcon={<ExpandMoreIcon />}
+									aria-controls="panel1a-content"
+									id="panel1a-header"
+								>
+									<Typography>Results</Typography>
+								</ExpansionPanelSummary>
+								<ExpansionPanelDetails>
+									<Grid
+										container
+										direction="row"
+										justify="center"
+										alignItems="stretch"
+										spacing={2}
+									>
+										{survey.questions.map(question => {
+											return (
+												<Grid item>
+													<Paper
+														className={
+															classes.question
+														}
+													>
+														{question.text}
+														{question.type ==
+														QuestionType.QCM ? (
+															question.answers
+																.length <= 2 ? (
+																<ColumnChart
+																	answers={
+																		question.answers
+																	}
+																></ColumnChart>
+															) : (
+																<PieChart
+																	answers={
+																		question.answers
+																	}
+																/>
+															)
+														) : null}
+														{question.type ==
+														QuestionType.TEXT ? (
+															<WordCloud
+																answers={
+																	question.answers
+																}
+															/>
+														) : null}
+													</Paper>
+												</Grid>
+											);
+										})}
+									</Grid>
+								</ExpansionPanelDetails>
+							</ExpansionPanel>
+						</Grid>
+					</Grid>
+				</>
 			) : null}
 		</div>
 	);
@@ -125,9 +203,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 		marginBottom: 15,
 	},
 	question: {
-		 width: '100%',
-		 height: '100%'
-	}
+		width: "100%",
+		height: "100%",
+	},
 }));
 
 export default ResultPage;

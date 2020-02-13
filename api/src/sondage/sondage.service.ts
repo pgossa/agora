@@ -31,6 +31,10 @@ export class SondageService {
     return this.surveyRepository.findOne({ where: { code } });
   }
 
+  async getSurveyAdmin(uuid: string): Promise<SurveyEntity | null> {
+    return this.surveyRepository.findOne({ where: { uuid } });
+  }
+
   async createSurvey(questions: Question[]) {
 
     const code = await this.gernerateCode(CODE_LENGTH);
@@ -67,7 +71,6 @@ export class SondageService {
         // survey: { code },
       },
     });
-    console.log(question)
     if (!question) {
       throw new ConflictException('not found');
     }
@@ -76,17 +79,14 @@ export class SondageService {
       answerIndex = question.answers.findIndex(q => q.text === text);
     }
 
-    console.log(answerIndex)
     if (answerIndex !== undefined && answerIndex !== -1) {
       question.answers[answerIndex].count = question.answers[answerIndex].count + 1;
     } else {
-      console.log('push')
       const newAnswer = new AnswerEntity();
       newAnswer.text = text;
       newAnswer.count = 1;
       question.answers.push(newAnswer);
     }
-    console.log(question)
     return await this.questionRepository.save(question);
   }
   async incrementAnswer(code: string, questionId: number, answerId: number) {

@@ -43,7 +43,6 @@ export default function WordCloud({ answers, details }: Props) {
 		return newWord;
 	})
 
-	console.log(words)
 	return (
 		<div>
         <ReactWordcloud options={options} words={words} />

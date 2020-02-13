@@ -8,7 +8,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import { makeStyles } from "@material-ui/styles";
 import * as React from "react";
 import { connect } from "react-redux";
-import { Route, RouteComponentProps, BrowserRouter as Router } from "react-router-dom";
+import { Route, RouteComponentProps, BrowserRouter as Router, Redirect } from "react-router-dom";
 // import { history } from "./configureStore";
 import { Question } from "./model/model";
 import HomePage from "./pages/HomePage";
@@ -16,6 +16,7 @@ import CreatePage from "./pages/CreatePage";
 import withRoot from "./withRoot";
 import ResultPage from "./pages/ResultPage";
 import AnswerPage from "./pages/AnswerPage";
+import { useState } from "react";
 
 
 function Routes() {
@@ -27,22 +28,21 @@ function Routes() {
 			<Route exact={true} path="/home" component={HomePage} />
 			<Route exact={true} path="/create" component={CreatePage} />
 			<Route exact={true} path="/answer" component={AnswerPage} />
-			<Route exact={true} path="/result" component={ResultPage} />
+			<Route exact={true} path="/result/:uuid" component={ResultPage} />
 		</div>
 	);
 }
 
 
 interface Props extends RouteComponentProps<void>, WithWidth {
-	questionList: Question[];
 }
 
-function App(props?: Props) {
+function App(props: Props) {
 	const classes = useStyles();
-
 	if (!props) {
 		return null;
 	}
+
 
 	return (
 		<Router>
@@ -69,25 +69,25 @@ function App(props?: Props) {
 
 const useStyles = makeStyles((theme: Theme) => ({
 	root: {
-		width: "100%",
-		height: "100%",
-		zIndex: 1,
+		// width: "100%",
+		// height: "100%",
+		// zIndex: 1,
 		// overflow: "hidden",
 	},
 	appFrame: {
-		position: "relative",
-		display: "flex",
-		width: "100%",
-		height: "100%",
+		// position: "relative",
+		// display: "flex",
+		// width: "100%",
+		// height: "100%",
 	},
 	appBar: {
-		zIndex: theme.zIndex.drawer + 1,
-		position: "absolute",
+		// zIndex: theme.zIndex.drawer + 1,
+		// position: "absolute",
 	},
 	navIconHide: {
-		[theme.breakpoints.up("md")]: {
-			display: "none",
-		},
+		// [theme.breakpoints.up("md")]: {
+		// 	display: "none",
+		// },
 	},
 	content: {
 		backgroundColor: theme.palette.background.default,

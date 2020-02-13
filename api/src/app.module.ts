@@ -13,7 +13,7 @@ import { SurveyGateway } from './sondage/survey.gateway';
           host: 'localhost',
           port: 3305,
           username: 'root',
-          password: '',
+          password: 'root',
           database: 'agora',
           entities: [SurveyEntity, QuestionEntity, AnswerEntity],
           synchronize: true,
