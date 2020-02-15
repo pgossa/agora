@@ -104,7 +104,7 @@ function ResultPage(props: Props) {
 					>
 						<Grid item>
 							Use the code:{" "}
-							<Typography variant="h4" gutterBottom>
+							<Typography variant="h2" gutterBottom>
 								{survey.code}
 							</Typography>
 						</Grid>
@@ -128,13 +128,13 @@ function ResultPage(props: Props) {
 									<Grid
 										container
 										direction="row"
-										justify="center"
+										justify='space-around'
 										alignItems="stretch"
-										spacing={2}
+										// spacing={2}
 									>
 										{survey.questions.map(question => {
 											return (
-												<Grid item>
+												<Grid item xl={5} lg={5} md={6} sm={12} xs={12}>
 													<Paper
 														className={
 															classes.question

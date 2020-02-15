@@ -117,3 +117,4 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export default withRoot(withWidth()(App));
+// export default withWidth()(App);
