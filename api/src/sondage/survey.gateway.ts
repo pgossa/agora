@@ -2,6 +2,7 @@ import { SubscribeMessage, WebSocketGateway, OnGatewayConnection, OnGatewayDisco
 import { Server } from 'socket.io';
 import { SurveyEntity } from './survey.entity';
 import { SondageService } from './sondage.service';
+import { async } from 'rxjs/internal/scheduler/async';
 
 
 interface SurveyUsers {
@@ -85,6 +86,7 @@ export class SurveyGateway implements OnGatewayConnection, OnGatewayDisconnect {
       await this.sondageService.incrementAnswer(code, questionId, id);
     } else if (text) {
       await this.sondageService.addAnswer(code, questionId, text);
+
     }
     const survey = await this.sondageService.getSurvey(code);
     this.sendSurvey(survey);

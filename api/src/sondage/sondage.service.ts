@@ -28,7 +28,7 @@ export class SondageService {
   }
 
   async getSurvey(code: string): Promise<SurveyEntity | null> {
-    return this.surveyRepository.findOne({ where: { code } });
+    return await this.surveyRepository.findOne({ where: { code } });
   }
 
   async getSurveyAdmin(uuid: string): Promise<SurveyEntity | null> {
@@ -61,8 +61,7 @@ export class SondageService {
     return this.surveyRepository.save(newSurvey);
   }
 
-  async addAnswer(code: string, questionId: number, text: string) {
-    text = text.toLowerCase();
+  async addAnswer(code: string, questionId: number, text: string[]) {
     const question = await this.questionRepository.findOne({
       where:
       {
@@ -74,19 +73,23 @@ export class SondageService {
     if (!question) {
       throw new ConflictException('not found');
     }
-    let answerIndex;
-    if (question.answers.length > 0) {
-      answerIndex = question.answers.findIndex(q => q.text === text);
-    }
+    console.log(text)
+    text.map((str) => {
+      let answerIndex;
+      if (question.answers.length > 0) {
+        answerIndex = question.answers.findIndex(q => q.text === str);
+      }
 
-    if (answerIndex !== undefined && answerIndex !== -1) {
-      question.answers[answerIndex].count = question.answers[answerIndex].count + 1;
-    } else {
-      const newAnswer = new AnswerEntity();
-      newAnswer.text = text;
-      newAnswer.count = 1;
-      question.answers.push(newAnswer);
-    }
+      if (answerIndex !== undefined && answerIndex !== -1) {
+        question.answers[answerIndex].count = question.answers[answerIndex].count + 1;
+      } else {
+        const newAnswer = new AnswerEntity();
+        newAnswer.text = str;
+        newAnswer.count = 1;
+        question.answers.push(newAnswer);
+      }
+    });
+
     return await this.questionRepository.save(question);
   }
   async incrementAnswer(code: string, questionId: number, answerId: number) {

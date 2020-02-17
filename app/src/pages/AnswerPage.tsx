@@ -23,6 +23,8 @@ import { useState, useEffect } from "react";
 import io from "socket.io-client";
 import axios from "axios";
 import { BASE_URL } from "../App";
+import AnswerText from "../components/AnswerText";
+import AnswersText from "../components/AnswersText";
 
 interface Props extends RouteComponentProps<void> {}
 
@@ -34,7 +36,9 @@ function AnswerPage(props: Props) {
 
 	const [survey, setSurvey] = useState<Survey | undefined>(undefined);
 	const [indexQuestion, setIndexQuestion] = useState(0);
-	const [value, setValue] = React.useState<string | string[]>("");
+	const [answersQcm, setAnswerQcm] = React.useState<string | undefined>(
+		undefined
+	);
 
 	const [code, setCode] = useState<string>("");
 
@@ -44,23 +48,19 @@ function AnswerPage(props: Props) {
 
 	const [redirect, setRedirect] = useState<undefined | string>(undefined);
 
+	const [answersText, setAnswersText] = useState<string[]>([""]);
+
 	const handleChangeQCMAnswer = (
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
-		setValue((event.target as HTMLInputElement).value);
-	};
-
-	const handleChangeTextAnswer = (
-		event: React.ChangeEvent<HTMLInputElement>
-	) => {
-		setValue((event.target as HTMLInputElement).value);
+		setAnswerQcm((event.target as HTMLInputElement).value);
 	};
 
 	const handleClickNext = () => {
 		if (!survey) {
 			return null;
 		}
-		setValue("");
+		
 
 		const currentQuestion = survey.questions[indexQuestion];
 		let newAnswer;
@@ -69,7 +69,7 @@ function AnswerPage(props: Props) {
 				newAnswer = {
 					code,
 					questionId: currentQuestion.id,
-					id: Number(value),
+					id: Number(answersQcm),
 				};
 				break;
 
@@ -77,7 +77,7 @@ function AnswerPage(props: Props) {
 				newAnswer = {
 					code,
 					questionId: currentQuestion.id,
-					text: value,
+					text: answersText,
 				};
 				break;
 		}
@@ -90,6 +90,8 @@ function AnswerPage(props: Props) {
 			console.log("fini");
 			setState(false);
 		}
+		setAnswerQcm("");
+		setAnswersText([""]);
 	};
 
 	const handleChangeCode = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -171,7 +173,7 @@ function AnswerPage(props: Props) {
 				direction="column"
 				alignItems="center"
 				justify="center"
-				style={{ minHeight: "50vh" }}
+				style={{ minHeight: "100vh" }}
 			>
 				<Grid item>
 					<form>
@@ -224,7 +226,7 @@ function AnswerPage(props: Props) {
 				direction="column"
 				alignItems="center"
 				justify="center"
-				style={{ minHeight: "50vh" }}
+				style={{ minHeight: "100vh" }}
 			>
 				<Grid item>Thanks for you answers</Grid>
 				<Grid item>
@@ -246,7 +248,7 @@ function AnswerPage(props: Props) {
 			direction="column"
 			alignItems="center"
 			justify="center"
-			style={{ minHeight: "50vh" }}
+			style={{ minHeight: "100vh" }}
 		>
 			<Grid item>
 				<Typography variant="h4" gutterBottom>
@@ -258,10 +260,7 @@ function AnswerPage(props: Props) {
 				<>
 					<Grid item>
 						<div>
-							<FormControl
-								component="fieldset"
-								className={classes.formControl}
-							>
+							<FormControl component="fieldset">
 								<Grid
 									container
 									direction="column"
@@ -280,7 +279,7 @@ function AnswerPage(props: Props) {
 											<RadioGroup
 												aria-label="answer"
 												name="answer"
-												value={value}
+												value={answersQcm}
 												onChange={handleChangeQCMAnswer}
 											>
 												{currentQuestion.answers.map(
@@ -307,14 +306,9 @@ function AnswerPage(props: Props) {
 									{currentQuestion.type ==
 									QuestionType.TEXT ? (
 										<Grid item>
-											<TextField
-												id={currentQuestion.id.toString()}
-												label="Answer"
-												variant="outlined"
-												onChange={
-													handleChangeTextAnswer
-												}
-												value={value}
+											<AnswersText
+												update={setAnswersText}
+												answers={answersText}
 											/>
 										</Grid>
 									) : null}
@@ -324,7 +318,7 @@ function AnswerPage(props: Props) {
 					</Grid>
 					<Grid item>
 						<Button
-							disabled={value !== "" ? undefined : true}
+							disabled={answersQcm !== "" || answersText !== [""]? undefined : true}
 							variant="contained"
 							onClick={() => handleClickNext()}
 						>
@@ -342,10 +336,6 @@ function AnswerPage(props: Props) {
 	);
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
-	formControl: {
-		margin: theme.spacing(3),
-	},
-}));
+const useStyles = makeStyles((theme: Theme) => ({}));
 
 export default AnswerPage;

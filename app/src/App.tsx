@@ -41,7 +41,7 @@ function Routes() {
 	const classes = useStyles();
 
 	return (
-		<div className={classes.content}>
+		<div>
 			<Route exact={true} path="/" component={HomePage} />
 			<Route exact={true} path="/home" component={HomePage} />
 			<Route exact={true} path="/create" component={CreatePage} />
@@ -62,8 +62,8 @@ function App(props: Props) {
 	return (
 		<Router>
 			<div className={classes.root}>
-				<div className={classes.appFrame}>
-					<AppBar className={classes.appBar}>
+				<div>
+					{/* <AppBar className={classes.appBar}>
 						<Toolbar>
 							<Link to="/" style={{ textDecoration: "none", color: 'white' }}>
 								<Typography variant="h6" color="inherit">
@@ -75,7 +75,7 @@ function App(props: Props) {
 					<br />
 					<br />
 					<br />
-					<br />
+					<br /> */}
 					<Routes />
 				</div>
 			</div>
@@ -88,31 +88,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 		width: "100%",
 		height: "100%",
 		zIndex: 1,
-	},
-	appFrame: {
-		// position: "relative",
-		// display: "flex",
-		// width: "100%",
-		// height: "100%",
-	},
-	appBar: {
-		// zIndex: theme.zIndex.drawer + 1,
-		// position: "absolute",
-	},
-	navIconHide: {
-		// [theme.breakpoints.up("md")]: {
-		// 	display: "none",
-		// },
-	},
-	content: {
-		// backgroundColor: theme.palette.background.default,
-		// width: "100%",
-		// height: "calc(100% - 56px)",
-		// marginTop: 56,
-		// [theme.breakpoints.up("sm")]: {
-		// 	height: "calc(100% - 64px)",
-		// 	marginTop: 64,
-		// },
+		overflowY: 'hidden'
 	},
 }));
 

@@ -30,7 +30,7 @@ export default function Answer({ answer, update, remove }: Props) {
 			container
 			direction="row"
 			justify="space-around"
-			alignItems='flex-start'
+			alignItems="center"
 			spacing={1}
 		>
 			<Grid item>
@@ -53,7 +53,18 @@ export default function Answer({ answer, update, remove }: Props) {
 						<DeleteIcon fontSize="small" />
 					</IconButton>
 				</Grid>
-			) : null}
+			) : (
+				<Grid item>
+					<IconButton
+						aria-label="Delete"
+						color="default"
+						size="small"
+						style={{visibility:'hidden'}}
+					>
+						<DeleteIcon fontSize="small" />
+					</IconButton>
+				</Grid>
+			)}
 		</Grid>
 	);
 }
