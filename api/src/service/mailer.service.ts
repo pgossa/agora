@@ -1,6 +1,8 @@
 import * as nodemailer from 'nodemailer';
 import { Logger } from '../service/logger.service';
 import { Injectable } from '@nestjs/common';
+import { base64Agora } from '../assets/base64_logo_agora';
+import { base64Isen } from '../assets/base64_logo_isen';
 
 @Injectable()
 export class MailerService {
@@ -29,12 +31,13 @@ export class MailerService {
   }
 
   private async sendEmail(transporter, to: string, surveyUuid: string) {
+    let htmlContent = this.generateHtmlBody(surveyUuid);
+
     return await transporter.sendMail({
-      from: '"Agora Foo" <foo@example.com>', // sender address
+      from: '"Agora" <agora.survey@gmail.com>', // sender address
       to, // list of receivers separated with a comma
       subject: 'You created a new survey !', // Subject line
-      text: `Go to http://localhost:3000/result/${surveyUuid}`, // plain text body
-      html: `<a href="http://localhost:3000/result/${surveyUuid}">Go to your survey</a>`, // html body
+      html: htmlContent, // html body
     });
   }
 
@@ -50,5 +53,26 @@ export class MailerService {
         `Mail was sent for survey ${surveyCode} to ${destination}`,
       ]);
     }
+  }
+
+  private generateHtmlBody(surveyUuid: string){
+    return `<html>
+    <div style="background-color:#666666">
+    <img style="display:block;margin:auto;width:30%;padding-top:2em" src="${base64Agora}">
+    <h1 style="margin:1em 0 1em 1em;color:white;font-family:sans-serif">You created a new survey !</h1>
+    <div style="height:10px;background-color:#2A7032"></div>
+    </div>
+    <div style="background-color:#363F5A;color:white;font-size:20px;font-family:sans-serif;padding:1em">
+    <p>The next step is to share it with your audience and check the results in real time.</p>
+    <p>Thanks to the power of Agora, you can visualize the results on any device.</p>
+    <div style="padding:1em;margin:1em 0 1em 0">
+    <a style="color:white;text-decoration:none;text-transform:uppercase;background-color:#2A7032;font-weight:bold;padding:1em;border-radius:5px;" href="http://localhost:3000/result/${surveyUuid}">Go to your survey</a>
+    </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;background-color:black;padding:1em">
+    <p style="color:white;width:30%"><span style="font-weigth:bold">Agora </span><span style="font-style: italic">Crowd booster </span>is a cross platform survey application developed as part of studies at ISEN Toulon. The team: Gulliem CHAMAYOU, Romain JACQUIEZ, Pierre GOSSA & Julien LUNA. If you have any questions please contact us at <span style="font-weight:bold;font-style:italic">agora.survey@gmail.com</span></p>
+    <img style="width:20%" src="${base64Isen}">
+    </div>
+    </html>`;
   }
 }
