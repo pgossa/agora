@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Carousel as CarouselReact } from "react-responsive-carousel";
 import Carousel1 from "../images/carousel-2.jpg";
+import CreateSurvey from "../images/create_survey.png";
 import { Paper, Grid, Button, Typography } from "@material-ui/core";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 interface Props {}
@@ -36,7 +37,7 @@ export default function Carousel({}: Props) {
 						{/* <p className="legend">Legend 1</p> */}
 					</div>
 					<div>
-						<img src={Carousel1} />
+						<img src={CreateSurvey} />
 						{/* <p className="legend">Legend 2</p> */}
 					</div>
 				</CarouselReact>
