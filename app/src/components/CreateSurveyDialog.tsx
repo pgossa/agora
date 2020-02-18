@@ -7,6 +7,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { Question } from "../model/model";
+import CreateIcon from '../images/create.png'
 
 import axios from "axios";
 
@@ -45,20 +46,22 @@ export default function CreateSurveyDialog({ questionList }: IProps) {
             setOpen(false);
 	};
 	return (
-		<div>
+		<>
 			<Button
 				variant="outlined"
-				color="secondary"
+				style={{backgroundColor: '#0099ff', borderRadius: '23px'}}
 				onClick={handleClickOpen}
+				fullWidth
+				startIcon={<img src={CreateIcon} width='50px'></img>}
 			>
-				Create survey
+				Create your survey
 			</Button>
 			<Dialog
 				open={open}
 				onClose={handleClose}
 				aria-labelledby="form-dialog-title"
 			>
-				<DialogTitle id="form-dialog-title">Create survey</DialogTitle>
+				<DialogTitle id="form-dialog-title">Create your survey</DialogTitle>
 				<DialogContent>
 					<DialogContentText>
 						To create a survey you need to enter your email. You
@@ -83,6 +86,6 @@ export default function CreateSurveyDialog({ questionList }: IProps) {
 					</Button>
 				</DialogActions>
 			</Dialog>
-		</div>
+		</>
 	);
 }

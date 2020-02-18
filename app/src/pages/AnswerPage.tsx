@@ -25,8 +25,13 @@ import axios from "axios";
 import { BASE_URL } from "../App";
 import AnswerText from "../components/AnswerText";
 import AnswersText from "../components/AnswersText";
+import AppBar from "../components/AppBar";
+import withWidth, { isWidthUp, WithWidth } from "@material-ui/core/withWidth";
+import Carousel from "../components/Carousel";
+import CompleteIcon from "../images/complete.png";
+import CreateIcon from "../images/create.png";
 
-interface Props extends RouteComponentProps<void> {}
+interface Props extends RouteComponentProps<void>, WithWidth {}
 
 const socket = io("http://localhost:3005"); //Dev
 // const socket = io("http://agorapi:3005") // Prod
@@ -60,7 +65,6 @@ function AnswerPage(props: Props) {
 		if (!survey) {
 			return null;
 		}
-		
 
 		const currentQuestion = survey.questions[indexQuestion];
 		let newAnswer;
@@ -138,10 +142,10 @@ function AnswerPage(props: Props) {
 						newSurveyAnswered = [code];
 					}
 
-					localStorage.setItem(
-						"surveysAnswered",
-						JSON.stringify(newSurveyAnswered)
-					);
+					// localStorage.setItem(
+					// 	"surveysAnswered",
+					// 	JSON.stringify(newSurveyAnswered)
+					// );
 				}
 			})
 			.catch(error => {
@@ -167,175 +171,266 @@ function AnswerPage(props: Props) {
 
 	if (!survey) {
 		return (
-			<Grid
-				container
-				spacing={2}
-				direction="column"
-				alignItems="center"
-				justify="center"
-				style={{ minHeight: "100vh" }}
-			>
-				<Grid item>
-					<form>
+			<div className={classes.root}>
+				<AppBar />
+				<Grid
+					container
+					direction="row"
+					justify="center"
+					alignItems="center"
+					style={{ minHeight: "90vh" }}
+					spacing={8}
+				>
+					<Grid item lg={4} xl={4} md={4}>
 						<Grid
 							container
-							direction="column"
-							justify="center"
-							alignItems="center"
 							spacing={2}
+							direction="column"
+							alignItems="center"
+							justify="center"
+							style={{ minHeight: "100vh" }}
 						>
 							<Grid item>
-								<TextField
-									id="outlined-basic"
-									label="Enter survey code"
-									variant="outlined"
-									onChange={handleChangeCode}
-									error={error ? true : undefined}
-								/>
-								{error ? (
-									<FormHelperText error>
-										{error}
-									</FormHelperText>
-								) : null}
-							</Grid>
-							<Grid item>
-								<Button
-									onClick={() => {
-										handleClickStart();
+								<form
+									style={{
+										backgroundColor: "white",
+										borderRadius: "21px",
+										padding: "10px",
 									}}
-									variant="contained"
-									disabled={
-										code.length < 5 ? true : undefined
-									}
 								>
-									Start
-								</Button>
+									<Grid
+										container
+										direction="column"
+										justify="center"
+										alignItems="center"
+										spacing={2}
+									>
+										<Grid item>
+											<TextField
+												id="outlined-basic"
+												label="Enter survey code"
+												variant="outlined"
+												onChange={handleChangeCode}
+												error={error ? true : undefined}
+											/>
+											{error ? (
+												<FormHelperText error>
+													{error}
+												</FormHelperText>
+											) : null}
+										</Grid>
+										<Grid item>
+											<Button
+												onClick={() => {
+													handleClickStart();
+												}}
+												variant="contained"
+												disabled={
+													code.length < 5
+														? true
+														: undefined
+												}
+												startIcon={
+													<img
+														src={CompleteIcon}
+														width="50px"
+													></img>
+												}
+											>
+												Complete a survey
+											</Button>
+										</Grid>
+									</Grid>
+								</form>
 							</Grid>
 						</Grid>
-					</form>
+					</Grid>
+					{isWidthUp("md", props.width) ? (
+						<Grid item lg={6} xl={6} md={6}>
+							<Carousel />
+						</Grid>
+					) : null}
 				</Grid>
-			</Grid>
+			</div>
 		);
 	}
 
 	if (state === false) {
 		return (
+			<div className={classes.root}>
+				<AppBar />
+				<Grid
+					container
+					spacing={2}
+					direction="column"
+					alignItems="center"
+					justify="center"
+					style={{ minHeight: "100vh" }}
+				>
+					<Grid item>Thanks for you answers</Grid>
+					<Grid item>
+						<Button
+							variant="contained"
+							onClick={() => setRedirect("/")}
+						>
+							Go back
+						</Button>
+					</Grid>
+				</Grid>
+			</div>
+		);
+	}
+
+	return (
+		<div className={classes.root}>
+			<AppBar />
 			<Grid
 				container
 				spacing={2}
 				direction="column"
 				alignItems="center"
 				justify="center"
-				style={{ minHeight: "100vh" }}
+				style={{ minHeight: "90vh" }}
 			>
-				<Grid item>Thanks for you answers</Grid>
-				<Grid item>
-					<Button
-						variant="contained"
-						onClick={() => setRedirect("/")}
-					>
-						Go back
-					</Button>
-				</Grid>
-			</Grid>
-		);
-	}
-
-	return (
-		<Grid
-			container
-			spacing={2}
-			direction="column"
-			alignItems="center"
-			justify="center"
-			style={{ minHeight: "100vh" }}
-		>
-			<Grid item>
-				<Typography variant="h4" gutterBottom>
-					Answer
-				</Typography>
-				<Typography variant="h5" gutterBottom></Typography>
-			</Grid>
-			{currentQuestion ? (
-				<>
-					<Grid item>
-						<div>
-							<FormControl component="fieldset">
-								<Grid
-									container
-									direction="column"
-									justify="center"
-									alignItems="center"
-									spacing={2}
+				{currentQuestion ? (
+					<>
+						<Grid item>
+							<div>
+								<FormControl
+									component="fieldset"
+									style={{
+										backgroundColor: "#D2D1D4",
+										padding: "20px",
+										borderRadius: "23px",
+										minWidth: "50vh",
+									}}
 								>
-									<Grid item>
-										<FormLabel component="legend">
-											{currentQuestion.text}
-										</FormLabel>
-									</Grid>
-									{currentQuestion.type ==
-									QuestionType.QCM ? (
+									<Grid
+										container
+										direction="column"
+										justify="center"
+										alignItems="center"
+										spacing={2}
+										wrap="nowrap"
+									>
 										<Grid item>
-											<RadioGroup
-												aria-label="answer"
-												name="answer"
-												value={answersQcm}
-												onChange={handleChangeQCMAnswer}
+											<Grid
+												container
+												direction="row"
+												justify="center"
+												alignItems="center"
+												spacing={1}
+												style={{
+													backgroundColor: "white",
+													padding: "20px",
+													borderRadius: "21px",
+													minWidth: "50vh",
+												}}
 											>
-												{currentQuestion.answers.map(
-													(
-														answer: QuestionAnswer
-													) => {
-														return (
-															<FormControlLabel
-																value={answer.id.toString()}
-																control={
-																	<Radio color="primary" />
-																}
-																label={
-																	answer.text
-																}
-																labelPlacement="start"
-															/>
-														);
+												<Grid item>
+													<img
+														src={CreateIcon}
+														width="50px"
+													></img>
+												</Grid>
+												<Grid item>
+													<FormLabel component="legend">
+														{currentQuestion.text}
+													</FormLabel>
+												</Grid>
+											</Grid>
+										</Grid>
+										{currentQuestion.type ==
+										QuestionType.QCM ? (
+											<Grid
+												item
+												style={{
+													backgroundColor: "white",
+													padding: "20px",
+													borderRadius: "21px",
+													minWidth: "50vh",
+												}}
+											>
+												<RadioGroup
+													aria-label="answer"
+													name="answer"
+													value={answersQcm}
+													onChange={
+														handleChangeQCMAnswer
 													}
-												)}
-											</RadioGroup>
-										</Grid>
-									) : null}
-									{currentQuestion.type ==
-									QuestionType.TEXT ? (
-										<Grid item>
-											<AnswersText
-												update={setAnswersText}
-												answers={answersText}
-											/>
-										</Grid>
-									) : null}
-								</Grid>
-							</FormControl>
-						</div>
-					</Grid>
-					<Grid item>
-						<Button
-							disabled={answersQcm !== "" || answersText !== [""]? undefined : true}
-							variant="contained"
-							onClick={() => handleClickNext()}
-						>
-							{survey &&
-							indexQuestion < survey.questions.length - 1 ? (
-								<div>Next</div>
-							) : (
-								<div>End</div>
-							)}
-						</Button>
-					</Grid>
-				</>
-			) : null}
-		</Grid>
+												>
+													{currentQuestion.answers.map(
+														(
+															answer: QuestionAnswer
+														) => {
+															return (
+																<FormControlLabel
+																	value={answer.id.toString()}
+																	control={
+																		<Radio color="primary" />
+																	}
+																	label={
+																		answer.text
+																	}
+																	labelPlacement="end"
+																/>
+															);
+														}
+													)}
+												</RadioGroup>
+											</Grid>
+										) : null}
+										{currentQuestion.type ==
+										QuestionType.TEXT ? (
+											<Grid
+												item
+												style={{
+													backgroundColor: "white",
+													padding: "20px",
+													borderRadius: "21px",
+													minWidth: "50vh",
+												}}
+											>
+												<AnswersText
+													update={setAnswersText}
+													answers={answersText}
+												/>
+											</Grid>
+										) : null}
+									</Grid>
+								</FormControl>
+							</div>
+						</Grid>
+						<Grid item>
+							<Button
+								disabled={
+									answersQcm !== "" || answersText.join().length > 0
+										? undefined
+										: true
+								}
+								variant="contained"
+								onClick={() => handleClickNext()}
+							>
+								{survey &&
+								indexQuestion < survey.questions.length - 1 ? (
+									<div>Next</div>
+								) : (
+									<div>End</div>
+								)}
+							</Button>
+						</Grid>
+					</>
+				) : null}
+			</Grid>
+		</div>
 	);
 }
 
-const useStyles = makeStyles((theme: Theme) => ({}));
+const useStyles = makeStyles((theme: Theme) => ({
+	root: {
+		backgroundColor: "#faf4e4",
+		minHeight: "100vh",
+	},
+}));
 
-export default AnswerPage;
+export default withWidth()(AnswerPage);

@@ -82,6 +82,7 @@ export class SurveyGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('answer')
   async handleAnswer(client: any, payload: any): Promise<boolean> {
     const { code, questionId, id, text } = payload;
+    console.log(payload)
     if (id) {
       await this.sondageService.incrementAnswer(code, questionId, id);
     } else if (text) {

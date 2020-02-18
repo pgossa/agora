@@ -61,9 +61,8 @@ export default function QCMAnswer({ answers, updateAnswers, check }: Props) {
 				direction="column"
 				justify="space-around"
 				alignItems='flex-start'
-				spacing={1}
+				spacing={0}
 			>
-				<Grid item>QCM answer</Grid>
 				{localAnswers.map((answer, index) => {
 					return (
 						<Grid item>
@@ -77,12 +76,13 @@ export default function QCMAnswer({ answers, updateAnswers, check }: Props) {
 					);
 				})}
 			</Grid>
+			<br/>
 			<Grid
 				container
 				direction="column"
 				justify="space-around"
-				alignItems="flex-end"
-				spacing={0}
+				alignItems="flex-start"
+				// spacing={0}
 			>
 				<Grid item>
 					<Fab
@@ -90,6 +90,7 @@ export default function QCMAnswer({ answers, updateAnswers, check }: Props) {
 						aria-label="add"
 						size="small"
 						onClick={() => handleClickAdd()}
+						variant='extended'
 					>
 						<AddIcon fontSize="small" />
 					</Fab>

@@ -5,6 +5,7 @@ import * as React from "react";
 import { QuestionType, QuestionAnswer, Question } from "../model/model";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AnswerText from "./AnswerText";
+import Scrollbars from "react-custom-scrollbars";
 
 interface Props {
 	answers: string[];
@@ -45,35 +46,49 @@ export default function AnswersText({ update, answers }: Props) {
 			direction="row"
 			justify="center"
 			alignItems="center"
-			className={classes.answersBlock}
+			// className={classes.answersBlock}
 		>
-			<Grid
-				container
-				direction="column"
-				justify="center"
-				alignItems="center"
-				spacing={2}
+			<Scrollbars
+				autoHide
+				style={{
+					// width: 500,
+					minHeight: "20vh",
+					width: "45vh",
+					maxHeight: "40vh",
+				}}
 			>
-				{answers.map((answer: string, index: number) => {
-					return (
-						<AnswerText
-							answer={answer}
-							id={index}
-							update={updateAnswer}
-							remove={index > 0 ? removeAnswer : undefined}
-						/>
-					);
-				})}
-			</Grid>
+				<Grid
+					container
+					direction="column"
+					justify="center"
+					alignItems="center"
+					spacing={2}
+					style={{
+						// width: 500,
+						padding: '10px',
+					}}
+				>
+					{answers.map((answer: string, index: number) => {
+						return (
+							<AnswerText
+								answer={answer}
+								id={index}
+								update={updateAnswer}
+								remove={index > 0 ? removeAnswer : undefined}
+							/>
+						);
+					})}
+				</Grid>
+			</Scrollbars>
 		</Grid>
 	);
 }
 
 const useStyles = makeStyles({
 	answersBlock: {
-		minHeight: '20vh',
+		minHeight: "20vh",
 		maxHeight: "40vh",
 		overflowY: "auto",
-		overflowX: 'hidden'
+		overflowX: "hidden",
 	},
 });

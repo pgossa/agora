@@ -31,24 +31,40 @@ function QuestionList({ list, updateList, check }: Props) {
 	};
 	return (
 		// <div className={classes.root}>
-			<Grid
-				container
-				direction="column"
-				justify="space-around"
-				alignItems="center"
-				spacing={2}
-			>
-				{list.map((question: Question, index: number) => {
-					return (
-						<QuestionEdit
-							question={question}
-							update={updateQuestion}
-							remove={index > 0 ? removeQuestion : undefined}
-							check={check}
-						/>
-					);
-				})}
-			</Grid>
+		<Grid
+			container
+			direction="column"
+			justify="space-around"
+			alignItems="center"
+			spacing={2}
+		>
+			{list.map((question: Question, index: number) => {
+				return (
+					<Grid item xl={11} md={11} xs={11}>
+						<Paper
+							style={{
+								borderRadius: "21px",
+							}}
+						>
+							<div style={{
+								marginLeft: "20px",
+								marginRight: "20px",
+							}}>
+								<QuestionEdit
+									question={question}
+									update={updateQuestion}
+									remove={
+										index > 0 ? removeQuestion : undefined
+									}
+									check={check}
+								/>
+							</div>
+							<br />
+						</Paper>
+					</Grid>
+				);
+			})}
+		</Grid>
 		// {/* </div> */}
 	);
 }

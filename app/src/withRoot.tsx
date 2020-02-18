@@ -9,8 +9,8 @@ import { Suspense } from "react";
 export const theme = createMuiTheme({
 	palette: {
 		primary: {
-			light: "#e5e5e5",
-			main: "#727272",
+			light: "#0099ff",
+			main: "#0099ff",
 			dark: "#363839",
 			contrastText: "#fff",
 		},

@@ -63,19 +63,6 @@ function App(props: Props) {
 		<Router>
 			<div className={classes.root}>
 				<div>
-					{/* <AppBar className={classes.appBar}>
-						<Toolbar>
-							<Link to="/" style={{ textDecoration: "none", color: 'white' }}>
-								<Typography variant="h6" color="inherit">
-									Agora
-								</Typography>
-							</Link>
-						</Toolbar>
-					</AppBar>
-					<br />
-					<br />
-					<br />
-					<br /> */}
 					<Routes />
 				</div>
 			</div>
@@ -88,9 +75,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 		width: "100%",
 		height: "100%",
 		zIndex: 1,
-		overflowY: 'hidden'
+		overflowY: 'hidden',
+		overflowX: 'hidden'
 	},
 }));
 
 export default withRoot(withWidth()(App));
-// export default withWidth()(App);

@@ -13,7 +13,12 @@ interface Props {
 	check: boolean;
 }
 
-export default function QuestionEdit({ question, update, remove, check }: Props) {
+export default function QuestionEdit({
+	question,
+	update,
+	remove,
+	check,
+}: Props) {
 	const classes = useStyles();
 	const [questionText, setQuestionText] = React.useState<string>(
 		question.text
@@ -47,7 +52,7 @@ export default function QuestionEdit({ question, update, remove, check }: Props)
 	};
 
 	return (
-		<Grid item xl={12} md={12} xs={12}>
+		<>
 			<Grid
 				container
 				direction="row"
@@ -86,12 +91,19 @@ export default function QuestionEdit({ question, update, remove, check }: Props)
 						<Grid item>
 							<TextField
 								id="question"
-								label="Question"
-								variant="outlined"
+								label="Question ?"
 								value={questionText}
 								onChange={handleChangeText}
-								error={check && questionText.length == 0 ? true : undefined}
-								helperText={check && questionText.length == 0 ? 'Required': undefined}
+								error={
+									check && questionText.length == 0
+										? true
+										: undefined
+								}
+								helperText={
+									check && questionText.length == 0
+										? "Required"
+										: undefined
+								}
 								fullWidth
 							/>
 						</Grid>
@@ -101,24 +113,27 @@ export default function QuestionEdit({ question, update, remove, check }: Props)
 				<ButtonGroup
 					fullWidth
 					aria-label="full width outlined button group"
+					variant="contained"
 				>
 					<Button
 						onClick={() => handleChangeType(QuestionType.QCM)}
-						color={
-							questionType == QuestionType.QCM
-								? "primary"
-								: undefined
-						}
+						style={{
+							backgroundColor:
+								questionType == QuestionType.QCM
+									? "#045b95"
+									: '#0099ff',
+						}}
 					>
 						Qcm
 					</Button>
 					<Button
 						onClick={() => handleChangeType(QuestionType.TEXT)}
-						color={
-							questionType == QuestionType.TEXT
-								? "primary"
-								: undefined
-						}
+						style={{
+							backgroundColor:
+								questionType == QuestionType.TEXT
+									? "#045b95"
+									: '#0099ff',
+						}}
 					>
 						Text
 					</Button>
@@ -131,10 +146,13 @@ export default function QuestionEdit({ question, update, remove, check }: Props)
 						check={check}
 					/>
 				) : (
-					<div>TEXT answer</div>
+					<div>
+						Le personne répondant au sondage pourront répondre avec
+						un text
+					</div>
 				)}
 			</Grid>
-		</Grid>
+		</>
 	);
 }
 

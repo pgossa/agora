@@ -26,8 +26,9 @@ import PieChart from "../components/PieChart";
 import WordCloud from "../components/WordCloud";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ResultTools from "../components/ResultTools";
-import PeopleIcon from '@material-ui/icons/People';
-
+import PeopleIcon from "@material-ui/icons/People";
+import AppBar from "../components/AppBar";
+import CompleteIcon from "../images/complete.png";
 
 const socket = io("http://localhost:3005"); // Dev
 // const socket = io("http://agorapi:3005") // Prod
@@ -75,14 +76,13 @@ function ResultPage(props: Props) {
 		}
 	}, [uuid]);
 
-
-	if(error){
-		return <div>Survey not found</div>
+	if (error) {
+		return <div>Survey not found</div>;
 	}
 
-
 	return (
-		<div>
+		<div className={classes.root}>
+			<AppBar />
 			{survey ? (
 				<>
 					<Grid
@@ -109,70 +109,127 @@ function ResultPage(props: Props) {
 							</Typography>
 						</Grid>
 						<Grid item>
-							<PeopleIcon/>
+							<PeopleIcon />
 							{surveyUsers ? (
-								<div>{surveyUsers.end}/{surveyUsers.start}</div>
-							): <div>0/0</div>}
+								<div>
+									{surveyUsers.end}/{surveyUsers.start}
+								</div>
+							) : (
+								<div>0/0</div>
+							)}
 						</Grid>
 
 						<Grid item>
-							<ExpansionPanel>
-								<ExpansionPanelSummary
-									expandIcon={<ExpandMoreIcon />}
-									aria-controls="panel1a-content"
-									id="panel1a-header"
+							<div>
+								<ExpansionPanel
+									defaultExpanded
+									className={classes.wrape}
+									style={{
+										backgroundColor: "#D2D1D4",
+									}}
 								>
-									<Typography>Results</Typography>
-								</ExpansionPanelSummary>
-								<ExpansionPanelDetails>
-									<Grid
-										container
-										direction="row"
-										justify='space-around'
-										alignItems="stretch"
-										// spacing={2}
+									<ExpansionPanelSummary
+										expandIcon={<ExpandMoreIcon />}
+										aria-controls="panel1a-content"
+										id="panel1a-header"
 									>
-										{survey.questions.map(question => {
-											return (
-												<Grid item xl={5} lg={5} md={6} sm={12} xs={12}>
-													<Paper
+										<Typography>Results</Typography>
+									</ExpansionPanelSummary>
+									<ExpansionPanelDetails>
+										<Grid
+											container
+											direction="row"
+											justify="space-around"
+											alignItems="stretch"
+											// wrap="nowrap"
+											spacing={2}
+										>
+											{survey.questions.map((question, index) => {
+												return (
+													<Grid
+														item
+														xl={4}
+														lg={4}
+														md={6}
+														sm={12}
+														xs={12}
 														className={
 															classes.question
 														}
 													>
-														{question.text}
-														{question.type ==
-														QuestionType.QCM ? (
-															question.answers
-																.length <= 2 ? (
-																<ColumnChart
-																	answers={
-																		question.answers
+														<Paper
+															style={{
+																backgroundColor:
+																	"rgba(255, 255, 255, 0.57)",
+																borderRadius:
+																	"23px",
+																padding: "10px",
+															}}
+														>
+															<Grid
+																container
+																direction="row"
+																justify="center"
+																alignItems="center"
+															>
+																{/* <Grid item>
+																	<img
+																		src={
+																			CompleteIcon
+																		}
+																		width="50px"
+																	></img>
+																</Grid> */}
+																<Grid item>
+																	{
+																		question.text
 																	}
-																></ColumnChart>
-															) : (
-																<PieChart
+																</Grid>
+															</Grid>
+															{question.type ==
+															QuestionType.QCM ? (
+																question.answers
+																	.length <=
+																2 ? (
+																	<ColumnChart
+																		answers={
+																			question.answers
+																		}
+																	></ColumnChart>
+																) : (
+																	<PieChart
+																		answers={
+																			question.answers
+																		}
+																	/>
+																)
+															) : null}
+															{question.type ==
+															QuestionType.TEXT ? (
+																<WordCloud
 																	answers={
 																		question.answers
 																	}
 																/>
-															)
-														) : null}
-														{question.type ==
-														QuestionType.TEXT ? (
-															<WordCloud
-																answers={
-																	question.answers
-																}
-															/>
-														) : null}
-													</Paper>
-												</Grid>
-											);
-										})}
-									</Grid>
-								</ExpansionPanelDetails>
-							</ExpansionPanel>
+															) : null}
+															<Grid
+																container
+																direction="row"
+																justify='flex-end'
+																alignItems="center"
+															>
+																<Grid item>
+																	{index+1}/{survey.questions.length}
+																</Grid>
+															</Grid>
+														</Paper>
+													</Grid>
+												);
+											})}
+										</Grid>
+									</ExpansionPanelDetails>
+								</ExpansionPanel>
+							</div>
 						</Grid>
 					</Grid>
 				</>
@@ -182,29 +239,17 @@ function ResultPage(props: Props) {
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
-	root: {
-		padding: 20,
-		[theme.breakpoints.down("md")]: {
-			paddingTop: 50,
-			paddingLeft: 15,
-			paddingRight: 15,
-		},
-		flexGrow: 1,
-		width: "100%",
-	},
-
-	buttonContainer: {
-		width: "100%",
-		display: "flex",
-		justifyContent: "flex-end",
-	},
-
-	button: {
-		marginBottom: 15,
+	wrape: {
+		// overflowX: 'scroll',
+		// width:'100vh',
+		// paddingLeft:'50vh'
 	},
 	question: {
-		width: "100%",
-		height: "100%",
+		// minWidth: "50vh",
+	},
+	root: {
+		backgroundColor: "#faf4e4",
+		minHeight: "100vh",
 	},
 }));
 

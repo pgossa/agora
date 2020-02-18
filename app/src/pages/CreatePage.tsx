@@ -9,7 +9,7 @@ import {
 import { Theme } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/styles";
 import * as React from "react";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, Redirect } from "react-router-dom";
 import QuestionList from "../components";
 import { Survey, Question, QuestionType } from "../model/model";
 import AddIcon from "@material-ui/icons/Add";
@@ -23,6 +23,11 @@ import {
 	WithWidthOptions,
 } from "@material-ui/core/withWidth";
 import withRoot from "../withRoot";
+import Logo from "../images/Agora.png";
+import Tools from "../components/Tools";
+
+import { Scrollbars } from "react-custom-scrollbars";
+import AppBar from "../components/AppBar";
 
 interface Props extends RouteComponentProps<void>, WithWidth {}
 
@@ -33,6 +38,8 @@ function CreatePage(props: Props) {
 	]);
 
 	const [check, setCheck] = useState<boolean>(false);
+
+	const [redirect, setRedirect] = useState<undefined | string>(undefined);
 
 	const handleClickAdd = () => {
 		const id =
@@ -48,81 +55,100 @@ function CreatePage(props: Props) {
 		setQuestionList([...questionList, newQuestion]);
 	};
 
+	if (redirect) {
+		return <Redirect to={redirect} />;
+	}
+
 	return (
-		<Grid
-			container
-			direction="row"
-			justify="center"
-			alignItems="center"
-			style={{ minHeight: "100vh" }}
-		>
-			<Grid item lg={4} xl={4} md={4}>
-				<Grid
-					container
-					direction="column"
-					justify="center"
-					alignItems="center"
-					spacing={2}
-				>
-					<Grid item>
-						<Typography variant="h5" gutterBottom>
-							Create your survey.
-						</Typography>
-						<Typography variant="h6" gutterBottom>
-							Complete the below field to create your survey
-						</Typography>
-					</Grid>
-					<Grid item className={classes.questionBlock}>
-						<Paper>
-							<br></br>
-							<Grid
-								container
-								direction="column"
-								justify="center"
-								alignItems="center"
-								spacing={2}
-							>
-								<Grid item>
-									<QuestionList
-										list={questionList}
-										updateList={setQuestionList}
-										check={check}
-									/>
-								</Grid>
-								<Grid item>
-									<Fab
-										color="primary"
-										aria-label="add"
-										onClick={() => handleClickAdd()}
+		<div className={classes.root}>
+			<AppBar />
+			<Grid
+				container
+				direction="row"
+				justify="center"
+				alignItems="center"
+				style={{ minHeight: "90vh" }}
+				spacing={8}
+			>
+				<Grid item lg={4} xl={4} md={4}>
+					<Grid
+						container
+						direction="column"
+						justify="center"
+						alignItems="center"
+						spacing={2}
+					>
+						<Scrollbars
+							autoHide
+							style={{
+								// width: 500,
+								minHeight: "50vh",
+								width: "45vh",
+								maxHeight: "60vh",
+							}}
+						>
+							<Grid item className={classes.questionBlock}>
+								<Paper
+									style={{
+										backgroundColor:
+											"rgba(255, 255, 255, 0.57)",
+										borderRadius: "23px",
+									}}
+								>
+									<br></br>
+									<Grid
+										container
+										direction="column"
+										justify="center"
+										alignItems="center"
+										spacing={2}
 									>
-										<AddIcon />
-									</Fab>
-								</Grid>
+										<Grid item>
+											<QuestionList
+												list={questionList}
+												updateList={setQuestionList}
+												check={check}
+											/>
+										</Grid>
+										<Grid item>
+											<Fab
+												color="primary"
+												variant="extended"
+												aria-label="add"
+												onClick={() => handleClickAdd()}
+											>
+												Add question
+											</Fab>
+										</Grid>
+									</Grid>
+								</Paper>
 							</Grid>
-						</Paper>
-					</Grid>
-					<Grid item>
-						<Paper>
+						</Scrollbars>
+						<Grid item className={classes.questionBlock}>
 							<CreateSurveyDialog questionList={questionList} />
-						</Paper>
+						</Grid>
 					</Grid>
 				</Grid>
+				{isWidthUp("md", props.width) ? (
+					<Grid item lg={6} xl={6} md={6}>
+						<Carousel />
+					</Grid>
+				) : null}
 			</Grid>
-			{isWidthUp("md", props.width) ? (
-				<Grid item lg={6} xl={6} md={6}>
-					<Carousel />
-				</Grid>
-			) : null}
-		</Grid>
+		</div>
 	);
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
 	questionBlock: {
-		minHeight: "30vh",
-		maxHeight: "60vh",
-		overflowY: "auto",
-		
+		// minHeight: "30vh",
+		// width: "45vh",
+		// maxHeight: "60vh",
+		// overflowY: "auto",
+	},
+	root: {
+		backgroundColor: "#037d95",
+		minHeight: "100vh",
 	},
 }));
 

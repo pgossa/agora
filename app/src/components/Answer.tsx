@@ -31,15 +31,17 @@ export default function Answer({ answer, update, remove }: Props) {
 			direction="row"
 			justify="space-around"
 			alignItems="center"
-			spacing={1}
+			// spacing={1}
+			wrap='nowrap'
 		>
 			<Grid item>
 				<TextField
 					id={"answer" + answer.id}
 					label="Answer"
-					variant="outlined"
+					// variant="outlined"
 					value={textLocal}
 					onChange={handleChangeText}
+					margin='none'
 				/>
 			</Grid>
 			{remove ? (
