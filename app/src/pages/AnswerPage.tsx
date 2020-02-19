@@ -33,8 +33,8 @@ import CreateIcon from "../images/create.png";
 
 interface Props extends RouteComponentProps<void>, WithWidth {}
 
-const socket = io("http://localhost:3005"); //Dev
-// const socket = io("http://agorapi:3005") // Prod
+// const socket = io("http://localhost:3005"); //Dev
+const socket = io('http://89.83.80.125:8080') // Prod
 
 function AnswerPage(props: Props) {
 	const classes = useStyles();
@@ -142,10 +142,10 @@ function AnswerPage(props: Props) {
 						newSurveyAnswered = [code];
 					}
 
-					// localStorage.setItem(
-					// 	"surveysAnswered",
-					// 	JSON.stringify(newSurveyAnswered)
-					// );
+					localStorage.setItem(
+						"surveysAnswered",
+						JSON.stringify(newSurveyAnswered)
+					);
 				}
 			})
 			.catch(error => {

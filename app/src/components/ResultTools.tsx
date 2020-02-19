@@ -12,6 +12,7 @@ import { Survey } from "../model/model";
 import axios from "axios";
 import { RouteComponentProps, Redirect } from "react-router-dom";
 
+
 interface IProps {
 	survey: Survey;
 }
@@ -32,19 +33,16 @@ export default function ResultTools({ survey }: IProps) {
 		axios
 			.delete("/survey/" + survey.uuid)
 			.then(data => {
-				setRedirect('/');
+				setRedirect("/");
 			})
-			.catch(error => {
-			});
-    };
-    
-    const handleReset = () => {
+			.catch(error => {});
+	};
+
+	const handleReset = () => {
 		axios
 			.post("/survey/reset/" + survey.uuid)
-			.then(data => {
-			})
-			.catch(error => {
-			});
+			.then(data => {})
+			.catch(error => {});
 	};
 
 	if (redirect) {
@@ -68,12 +66,6 @@ export default function ResultTools({ survey }: IProps) {
 				open={Boolean(anchorEl)}
 				onClose={handleClose}
 			>
-				<MenuItem onClick={handleClose} disabled>
-					<ListItemIcon>
-						<SaveIcon fontSize="small" />
-					</ListItemIcon>
-					<Typography variant="inherit">Exporter</Typography>
-				</MenuItem>
 				<MenuItem onClick={handleReset}>
 					<ListItemIcon>
 						<RotateLeftIcon fontSize="small" />

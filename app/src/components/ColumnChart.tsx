@@ -52,11 +52,13 @@ export default function ColumnChart({ answers, details }: Props) {
 		},
 	};
 	return (
-		<Chart
-			options={chart.options}
-			series={chart.series}
-			type="bar"
-		/>
+		<div
+			style={{
+				minWidth: "30vh",
+			}}
+		>
+			<Chart options={chart.options} series={chart.series} type="bar" />
+		</div>
 	);
 }
 

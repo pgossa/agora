@@ -30,8 +30,8 @@ import PeopleIcon from "@material-ui/icons/People";
 import AppBar from "../components/AppBar";
 import CompleteIcon from "../images/complete.png";
 
-const socket = io("http://localhost:3005"); // Dev
-// const socket = io("http://agorapi:3005") // Prod
+// const socket = io("http://localhost:3005"); // Dev
+const socket = io("http://89.83.80.125:8080"); // Prod
 
 interface Props extends RouteComponentProps<void> {}
 
@@ -54,8 +54,7 @@ function ResultPage(props: Props) {
 			});
 
 			axios
-				.get("http://localhost:3005/survey/admin/" + uuid) // Dev
-				// .get("http://agorapi:3005/survey/" + code) // Prod
+				.get("/survey/admin/" + uuid)
 				.then(data => {
 					if (data.data) {
 						setSurvey(data.data);
@@ -136,43 +135,46 @@ function ResultPage(props: Props) {
 										<Typography>Resultats</Typography>
 									</ExpansionPanelSummary>
 									<ExpansionPanelDetails>
-										<Grid
-											container
-											direction="row"
-											justify="space-around"
-											alignItems="stretch"
-											// wrap="nowrap"
-											spacing={2}
-										>
-											{survey.questions.map((question, index) => {
-												return (
-													<Grid
-														item
-														xl={4}
-														lg={4}
-														md={6}
-														sm={12}
-														xs={12}
-														className={
-															classes.question
-														}
-													>
-														<Paper
-															style={{
-																backgroundColor:
-																	"rgba(255, 255, 255, 0.57)",
-																borderRadius:
-																	"23px",
-																padding: "10px",
-															}}
-														>
+										<div id='result'>
+											<Grid
+												container
+												direction="row"
+												justify="space-around"
+												alignItems="stretch"
+												// wrap="nowrap"
+												spacing={2}
+											>
+												{survey.questions.map(
+													(question, index) => {
+														return (
 															<Grid
-																container
-																direction="row"
-																justify="center"
-																alignItems="center"
+																item
+																xl={4}
+																lg={4}
+																md={6}
+																sm={12}
+																xs={12}
+																className={
+																	classes.question
+																}
 															>
-																{/* <Grid item>
+																<Paper
+																	style={{
+																		backgroundColor:
+																			"rgba(255, 255, 255, 0.57)",
+																		borderRadius:
+																			"23px",
+																		padding:
+																			"10px",
+																	}}
+																>
+																	<Grid
+																		container
+																		direction='column'
+																		justify="center"
+																		alignItems="center"
+																	>
+																		{/* <Grid item>
 																	<img
 																		src={
 																			CompleteIcon
@@ -180,53 +182,67 @@ function ResultPage(props: Props) {
 																		width="50px"
 																	></img>
 																</Grid> */}
-																<Grid item>
-																	{
-																		question.text
-																	}
-																</Grid>
+																		<Grid
+																			item
+																		>
+																			{
+																				question.text
+																			}
+																		</Grid>
+																		{question.type ==
+																		QuestionType.QCM ? (
+																			question
+																				.answers
+																				.length <=
+																			2 ? (
+																				<ColumnChart
+																					answers={
+																						question.answers
+																					}
+																				></ColumnChart>
+																			) : (
+																				<PieChart
+																					answers={
+																						question.answers
+																					}
+																				/>
+																			)
+																		) : null}
+																		{question.type ==
+																		QuestionType.TEXT ? (
+																			<WordCloud
+																				answers={
+																					question.answers
+																				}
+																			/>
+																		) : null}
+																	</Grid>
+																	<Grid
+																		container
+																		direction="row"
+																		justify="flex-end"
+																		alignItems="center"
+																	>
+																		<Grid
+																			item
+																		>
+																			{index +
+																				1}
+																			/
+																			{
+																				survey
+																					.questions
+																					.length
+																			}
+																		</Grid>
+																	</Grid>
+																</Paper>
 															</Grid>
-															{question.type ==
-															QuestionType.QCM ? (
-																question.answers
-																	.length <=
-																2 ? (
-																	<ColumnChart
-																		answers={
-																			question.answers
-																		}
-																	></ColumnChart>
-																) : (
-																	<PieChart
-																		answers={
-																			question.answers
-																		}
-																	/>
-																)
-															) : null}
-															{question.type ==
-															QuestionType.TEXT ? (
-																<WordCloud
-																	answers={
-																		question.answers
-																	}
-																/>
-															) : null}
-															<Grid
-																container
-																direction="row"
-																justify='flex-end'
-																alignItems="center"
-															>
-																<Grid item>
-																	{index+1}/{survey.questions.length}
-																</Grid>
-															</Grid>
-														</Paper>
-													</Grid>
-												);
-											})}
-										</Grid>
+														);
+													}
+												)}
+											</Grid>
+										</div>
 									</ExpansionPanelDetails>
 								</ExpansionPanel>
 							</div>

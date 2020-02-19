@@ -28,11 +28,11 @@ import axios from "axios";
 
 import io from "socket.io-client";
 
-export const BASE_URL = "http://localhost:3005";
-export const Socket = io("http://localhost:3005");
+// export const BASE_URL = "http://localhost:3005";
+// export const Socket = io("http://192.168.1.86:3005");
 
 //Prod
-// export const BASE_URL = 'http://agorapi:3005'
+export const BASE_URL = 'http://89.83.80.125:8080'
 // export const Socket = io("http://agorapi:3005");
 
 axios.defaults.baseURL = BASE_URL;

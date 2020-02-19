@@ -5,7 +5,6 @@ import * as React from "react";
 
 import Chart from "react-apexcharts";
 
-
 import { QuestionAnswer } from "../model/model";
 interface Props {
 	answers: QuestionAnswer[];
@@ -22,10 +21,9 @@ export default function PieChart({ answers, details }: Props) {
 		options: {
 			chart: {
 				type: "pie",
-				toolbar:{
+				toolbar: {
 					show: details ? details : false,
-				}
-			
+				},
 			},
 			labels: answers.map(answer => {
 				return answer.text;
@@ -46,14 +44,14 @@ export default function PieChart({ answers, details }: Props) {
 		},
 	};
 
-
-
 	return (
-		<Chart
-			options={chart.options}
-			series={chart.series}
-			type="pie"
-		/>
+		<div
+			style={{
+				minWidth: "30vh",
+			}}
+		>
+			<Chart options={chart.options} series={chart.series} type="pie" />
+		</div>
 	);
 }
 

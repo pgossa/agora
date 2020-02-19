@@ -32,11 +32,10 @@ export default function CreateSurveyDialog({ questionList }: IProps) {
 	};
 	const handleClickCreate = () => {
 		axios
-			.post("http://localhost:3005/survey/", {
+			.post("/survey/", {
 				questions: questionList,
 				email,
-			}) // Dev
-			// .get("http://agorapi:3005/survey/" + code) // Prod
+			})
 			.then(data => {
 				if (data.data) {
 				}

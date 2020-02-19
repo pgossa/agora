@@ -44,7 +44,11 @@ export default function WordCloud({ answers, details }: Props) {
 	})
 
 	return (
-		<div>
+		<div
+		//  style={{
+		// 	minWidth: '30vh'
+		// }}
+		>
         <ReactWordcloud options={options} words={words} />
       </div>
 	);

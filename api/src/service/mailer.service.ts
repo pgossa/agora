@@ -78,7 +78,7 @@ export class MailerService {
     <p>The next step is to share it with your audience and check the results in real time.</p>
     <p>Thanks to the power of Agora, you can visualize the results on any device.</p>
     <div style="padding:1em;margin:1em 0 1em 0">
-    <a style="color:white;text-decoration:none;text-transform:uppercase;background-color:#2A7032;font-weight:bold;padding:1em;border-radius:5px;" href="http://localhost:3000/result/${surveyUuid}">Go to your survey</a>
+    <a style="color:white;text-decoration:none;text-transform:uppercase;background-color:#2A7032;font-weight:bold;padding:1em;border-radius:5px;" href="http://89.83.80.125/result/${surveyUuid}">Go to your survey</a>
     </div>
     </div>
     <div style="display:flex;background-color:black;padding:1em">

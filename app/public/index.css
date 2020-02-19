@@ -1,3 +1,8 @@
-body > #root > div {
-	height: 100vh;
+body>#root>div {
+    height: 100vh;
+}
+
+.html2canvas-container {
+    width: 3000px !important;
+    height: 3000px !important;
 }
