@@ -77,7 +77,7 @@ function ResultPage(props: Props) {
 	}, [uuid]);
 
 	if (error) {
-		return <div>Survey not found</div>;
+		return <div>Pas de sondage trouvé</div>;
 	}
 
 	return (
@@ -103,7 +103,7 @@ function ResultPage(props: Props) {
 						spacing={2}
 					>
 						<Grid item>
-							Use the code:{" "}
+							Utilisez le code:{" "}
 							<Typography variant="h2" gutterBottom>
 								{survey.code}
 							</Typography>
@@ -133,7 +133,7 @@ function ResultPage(props: Props) {
 										aria-controls="panel1a-content"
 										id="panel1a-header"
 									>
-										<Typography>Results</Typography>
+										<Typography>Resultats</Typography>
 									</ExpansionPanelSummary>
 									<ExpansionPanelDetails>
 										<Grid

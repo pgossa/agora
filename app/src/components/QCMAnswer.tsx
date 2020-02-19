@@ -87,7 +87,7 @@ export default function QCMAnswer({ answers, updateAnswers, check }: Props) {
 				<Grid item>
 					<Fab
 						color="primary"
-						aria-label="add"
+						aria-label="Add"
 						size="small"
 						onClick={() => handleClickAdd()}
 						variant='extended'

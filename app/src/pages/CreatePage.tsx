@@ -117,7 +117,7 @@ function CreatePage(props: Props) {
 												aria-label="add"
 												onClick={() => handleClickAdd()}
 											>
-												Add question
+												Ajouter une question
 											</Fab>
 										</Grid>
 									</Grid>

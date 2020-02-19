@@ -60,8 +60,7 @@ function HomePage(props: Props) {
 												width="50px"
 											></img>
 										</Grid>
-										<Grid item>Create your own survey</Grid>
-										<Grid item>Very quickly</Grid>
+										<Grid item>Créer un sondage</Grid>
 									</Grid>
 								</Button>
 								<br></br>
@@ -91,8 +90,8 @@ function HomePage(props: Props) {
 												width="50px"
 											></img>
 										</Grid>
-										<Grid item>Complete a survey</Grid>
-										<Grid item>You must have code</Grid>
+										<Grid item>Repondre au sondage</Grid>
+										<Grid item>Vous devez avoir un code</Grid>
 									</Grid>
 								</Button>
 							</div>

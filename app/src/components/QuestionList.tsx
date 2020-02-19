@@ -44,11 +44,13 @@ function QuestionList({ list, updateList, check }: Props) {
 						<Paper
 							style={{
 								borderRadius: "21px",
+
 							}}
 						>
 							<div style={{
-								marginLeft: "20px",
-								marginRight: "20px",
+								//marginLeft: "20px",
+								//marginRight: "20px",
+								padding: '10px'
 							}}>
 								<QuestionEdit
 									question={question}

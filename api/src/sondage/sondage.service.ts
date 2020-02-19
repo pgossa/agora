@@ -125,6 +125,7 @@ export class SondageService {
     if (!survey) {
       throw new ConflictException('not found');
     }
+    survey.code = await this.gernerateCode(CODE_LENGTH);
     survey.questions = survey.questions.map((question) => {
       const newQuestion = question;
       if (question.answers) {

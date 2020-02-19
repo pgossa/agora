@@ -58,7 +58,6 @@ export default function QuestionEdit({
 				direction="row"
 				justify="flex-end"
 				alignItems="center"
-				spacing={1}
 			>
 				{remove ? (
 					<Grid item>
@@ -147,8 +146,7 @@ export default function QuestionEdit({
 					/>
 				) : (
 					<div>
-						Le personne répondant au sondage pourront répondre avec
-						un text
+						Les personne devront répondre avec un texte.
 					</div>
 				)}
 			</Grid>

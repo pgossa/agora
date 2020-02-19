@@ -54,7 +54,7 @@ export default function ResultTools({ survey }: IProps) {
 	return (
 		<div>
 			<IconButton
-				aria-label="more"
+				aria-label="More"
 				aria-controls="long-menu"
 				aria-haspopup="true"
 				onClick={handleClick}
@@ -72,19 +72,19 @@ export default function ResultTools({ survey }: IProps) {
 					<ListItemIcon>
 						<SaveIcon fontSize="small" />
 					</ListItemIcon>
-					<Typography variant="inherit">Export</Typography>
+					<Typography variant="inherit">Exporter</Typography>
 				</MenuItem>
 				<MenuItem onClick={handleReset}>
 					<ListItemIcon>
 						<RotateLeftIcon fontSize="small" />
 					</ListItemIcon>
-					<Typography variant="inherit">Reset</Typography>
+					<Typography variant="inherit">Réinitialiser</Typography>
 				</MenuItem>
 				<MenuItem onClick={handleDelete}>
 					<ListItemIcon>
 						<DeleteIcon fontSize="small" />
 					</ListItemIcon>
-					<Typography variant="inherit">Delete</Typography>
+					<Typography variant="inherit">Supprimer</Typography>
 				</MenuItem>
 			</Menu>
 		</div>

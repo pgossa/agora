@@ -54,7 +54,7 @@ export default function CreateSurveyDialog({ questionList }: IProps) {
 				fullWidth
 				startIcon={<img src={CreateIcon} width='50px'></img>}
 			>
-				Create your survey
+				Créez votre sondage!
 			</Button>
 			<Dialog
 				open={open}
@@ -64,14 +64,14 @@ export default function CreateSurveyDialog({ questionList }: IProps) {
 				<DialogTitle id="form-dialog-title">Create your survey</DialogTitle>
 				<DialogContent>
 					<DialogContentText>
-						To create a survey you need to enter your email. You
-						will receive a email with a link
+						Pour créer un sondage vous devez entrer un mail.
+						Le lien pour accéder aux résultats est dedans.
 					</DialogContentText>
 					<TextField
 						autoFocus
 						margin="dense"
 						id="name"
-						label="Email Address"
+						label="Adresse mail"
 						type="email"
 						fullWidth
 						onChange={handleChangeEmail}
@@ -79,10 +79,10 @@ export default function CreateSurveyDialog({ questionList }: IProps) {
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={handleClose} color="primary">
-						Cancel
+						Annuler
 					</Button>
 					<Button onClick={handleClickCreate} color="primary">
-						Send
+						Envoyer
 					</Button>
 				</DialogActions>
 			</Dialog>

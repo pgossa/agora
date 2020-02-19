@@ -17,10 +17,10 @@ export default function Carousel({}: Props) {
 		>
 			<Grid item>
 				<Typography align="center" variant='h6'>
-					Agora est une application de sondage gratuite,
+					Agora est une application de sondage gratuite.
 				</Typography>
 				<Typography align="center">
-					fait pour stimuler votre audience.
+					Créée pour stimuler votre audience!
 				</Typography>
 			</Grid>
 			<Grid item>

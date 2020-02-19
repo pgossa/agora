@@ -208,7 +208,7 @@ function AnswerPage(props: Props) {
 										<Grid item>
 											<TextField
 												id="outlined-basic"
-												label="Enter survey code"
+												label="Entrez le code du sondage"
 												variant="outlined"
 												onChange={handleChangeCode}
 												error={error ? true : undefined}
@@ -237,7 +237,7 @@ function AnswerPage(props: Props) {
 													></img>
 												}
 											>
-												Complete a survey
+												Repondre au sondage
 											</Button>
 										</Grid>
 									</Grid>
@@ -267,13 +267,13 @@ function AnswerPage(props: Props) {
 					justify="center"
 					style={{ minHeight: "100vh" }}
 				>
-					<Grid item>Thanks for you answers</Grid>
+					<Grid item>Merci pour vos reponses</Grid>
 					<Grid item>
 						<Button
 							variant="contained"
 							onClick={() => setRedirect("/")}
 						>
-							Go back
+							Retour
 						</Button>
 					</Grid>
 				</Grid>
@@ -413,9 +413,9 @@ function AnswerPage(props: Props) {
 							>
 								{survey &&
 								indexQuestion < survey.questions.length - 1 ? (
-									<div>Next</div>
+									<div>Suivant</div>
 								) : (
-									<div>End</div>
+									<div>Terminer</div>
 								)}
 							</Button>
 						</Grid>
