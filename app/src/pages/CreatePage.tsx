@@ -34,7 +34,7 @@ interface Props extends RouteComponentProps<void>, WithWidth {}
 function CreatePage(props: Props) {
 	const classes = useStyles();
 	const [questionList, setQuestionList] = useState<Question[]>([
-		{ id: 1, text: "", type: QuestionType.QCM, answers: [] },
+		{ id: 1, text: "", type: undefined, answers: [] },
 	]);
 
 	const [check, setCheck] = useState<boolean>(false);
@@ -49,7 +49,7 @@ function CreatePage(props: Props) {
 		const newQuestion: Question = {
 			id,
 			text: "",
-			type: QuestionType.QCM,
+			type: undefined,
 			answers: [],
 		};
 		setQuestionList([...questionList, newQuestion]);
@@ -65,10 +65,10 @@ function CreatePage(props: Props) {
 			<Grid
 				container
 				direction="row"
-				justify="center"
+				justify='space-around'
 				alignItems="center"
-				style={{ minHeight: "90vh" }}
-				spacing={8}
+				style={{ minHeight: "100vh" }}
+				// spacing={8}
 			>
 				<Grid item lg={4} xl={4} md={4}>
 					<Grid
@@ -83,11 +83,11 @@ function CreatePage(props: Props) {
 							style={{
 								// width: 500,
 								minHeight: "50vh",
-								width: "45vh",
+								// width: "45vh",
 								maxHeight: "60vh",
 							}}
 						>
-							<Grid item className={classes.questionBlock}>
+							<Grid item>
 								<Paper
 									style={{
 										backgroundColor:
@@ -124,7 +124,7 @@ function CreatePage(props: Props) {
 								</Paper>
 							</Grid>
 						</Scrollbars>
-						<Grid item className={classes.questionBlock}>
+						<Grid item>
 							<CreateSurveyDialog questionList={questionList} />
 						</Grid>
 					</Grid>
@@ -140,12 +140,7 @@ function CreatePage(props: Props) {
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
-	questionBlock: {
-		// minHeight: "30vh",
-		// width: "45vh",
-		// maxHeight: "60vh",
-		// overflowY: "auto",
-	},
+
 	root: {
 		backgroundColor: "#037d95",
 		minHeight: "100vh",

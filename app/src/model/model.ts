@@ -10,7 +10,7 @@ export interface QuestionAnswer {
 }
 export interface Question {
     id: number,
-    type: QuestionType,
+    type: QuestionType | undefined,
     text: string,
     answers: QuestionAnswer[]
 }

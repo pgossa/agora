@@ -23,9 +23,9 @@ export default function QuestionEdit({
 	const [questionText, setQuestionText] = React.useState<string>(
 		question.text
 	);
-	const [questionType, setQuestionType] = React.useState<QuestionType>(
-		question.type
-	);
+	const [questionType, setQuestionType] = React.useState<
+		QuestionType | undefined
+	>(question.type);
 	const [answers, setAnswers] = React.useState<QuestionAnswer[]>(
 		question.answers
 	);
@@ -109,45 +109,88 @@ export default function QuestionEdit({
 					</Grid>
 				</Grid>
 				<br />
-				<ButtonGroup
-					fullWidth
-					aria-label="full width outlined button group"
-					variant="contained"
-				>
-					<Button
-						onClick={() => handleChangeType(QuestionType.QCM)}
-						style={{
-							backgroundColor:
-								questionType == QuestionType.QCM
-									? "#045b95"
-									: '#0099ff',
-						}}
+				{!questionType ? (
+					<Grid
+						container
+						direction="column"
+						justify="center"
+						alignItems="center"
+						spacing={2}
 					>
-						Qcm
-					</Button>
-					<Button
-						onClick={() => handleChangeType(QuestionType.TEXT)}
-						style={{
-							backgroundColor:
-								questionType == QuestionType.TEXT
-									? "#045b95"
-									: '#0099ff',
-						}}
-					>
-						Text
-					</Button>
-				</ButtonGroup>
+						<Grid item lg={12} xl={12} md={12} sm={12} xs={12} >
+							<Button
+								color="primary"
+								variant="contained"
+								fullWidth
+								onClick={() =>
+									handleChangeType(QuestionType.QCM)
+								}
+							>
+								Je veux crée un QCM
+							</Button>
+						</Grid>
 
-				{questionType === QuestionType.QCM ? (
-					<QCMAnswer
-						answers={answers}
-						updateAnswers={updateAnswers}
-						check={check}
-					/>
+						<Grid item lg={12} xl={12} md={12} sm={12} xs={12} >
+							<Button
+								color="primary"
+								variant="contained"
+								fullWidth
+								onClick={() =>
+									handleChangeType(QuestionType.TEXT)
+								}
+							>
+								Je veux crée une question avec une réponse
+								ouverte (Text)
+							</Button>
+						</Grid>
+					</Grid>
 				) : (
-					<div>
-						Les personne devront répondre avec un texte.
-					</div>
+					<>
+						<ButtonGroup
+							fullWidth
+							aria-label="full width outlined button group"
+							variant="contained"
+						>
+							<Button
+								onClick={() =>
+									handleChangeType(QuestionType.QCM)
+								}
+								style={{
+									backgroundColor:
+										questionType == QuestionType.QCM
+											? "#045b95"
+											: "#0099ff",
+								}}
+							>
+								Qcm
+							</Button>
+							<Button
+								onClick={() =>
+									handleChangeType(QuestionType.TEXT)
+								}
+								style={{
+									backgroundColor:
+										questionType == QuestionType.TEXT
+											? "#045b95"
+											: "#0099ff",
+								}}
+							>
+								Text
+							</Button>
+						</ButtonGroup>
+
+						{questionType === QuestionType.QCM ? (
+							<QCMAnswer
+								answers={answers}
+								updateAnswers={updateAnswers}
+								check={check}
+							/>
+						) : (
+							<div>
+								Les personne devront répondre avec un texte.
+							</div>
+						)}
+					</>
 				)}
 			</Grid>
 		</>
