@@ -1,6 +1,8 @@
 import * as React from "react";
 import { Carousel as CarouselReact } from "react-responsive-carousel";
-import Carousel1 from "../images/carousel-2.jpg";
+import Carousel1 from "../images/carousel-1.jpg";
+import Carousel2 from "../images/carousel-2.jpg";
+import Carousel3 from "../images/carousel-3.jpg";
 import CreateSurvey from "../images/create_survey.png";
 import { Paper, Grid, Button, Typography } from "@material-ui/core";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -33,12 +35,20 @@ export default function Carousel({}: Props) {
 					showStatus={false}
 				>
 					<div>
+						<img src={CreateSurvey} />
+						{/* <p className="legend">Legend 2</p> */}
+					</div>
+					<div>
 						<img src={Carousel1} />
 						{/* <p className="legend">Legend 1</p> */}
 					</div>
 					<div>
-						<img src={CreateSurvey} />
-						{/* <p className="legend">Legend 2</p> */}
+						<img src={Carousel2} />
+						{/* <p className="legend">Legend 1</p> */}
+					</div>
+					<div>
+						<img src={Carousel3} />
+						{/* <p className="legend">Legend 1</p> */}
 					</div>
 				</CarouselReact>
 			</Grid>
