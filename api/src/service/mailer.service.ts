@@ -38,6 +38,18 @@ export class MailerService {
       to, // list of receivers separated with a comma
       subject: 'You created a new survey !', // Subject line
       html: htmlContent, // html body
+      attachments: [
+        {
+          filename: 'Agora.png',
+          path: 'src/assets/logo_isen.png',
+          cid: 'logoisencid'
+        },
+        {
+          filename: 'ISENToulon.png',
+          path: 'src/assets/logo_agora.png',
+          cid: 'logoagoracid'
+        }
+      ]
     });
   }
 
@@ -58,7 +70,7 @@ export class MailerService {
   private generateHtmlBody(surveyUuid: string){
     return `<html>
     <div style="background-color:#666666">
-    <img style="display:block;margin:auto;width:30%;padding-top:2em" src="${base64Agora}">
+    <img style="display:block;margin:auto;width:30%;padding-top:2em" src="cid:logoagoracid">
     <h1 style="margin:1em 0 1em 1em;color:white;font-family:sans-serif">You created a new survey !</h1>
     <div style="height:10px;background-color:#2A7032"></div>
     </div>
@@ -69,9 +81,9 @@ export class MailerService {
     <a style="color:white;text-decoration:none;text-transform:uppercase;background-color:#2A7032;font-weight:bold;padding:1em;border-radius:5px;" href="http://localhost:3000/result/${surveyUuid}">Go to your survey</a>
     </div>
     </div>
-    <div style="display:flex;justify-content:space-between;background-color:black;padding:1em">
+    <div style="display:flex;background-color:black;padding:1em">
     <p style="color:white;width:30%"><span style="font-weigth:bold">Agora </span><span style="font-style: italic">Crowd booster </span>is a cross platform survey application developed as part of studies at ISEN Toulon. The team: Gulliem CHAMAYOU, Romain JACQUIEZ, Pierre GOSSA & Julien LUNA. If you have any questions please contact us at <span style="font-weight:bold;font-style:italic">agora.survey@gmail.com</span></p>
-    <img style="width:20%" src="${base64Isen}">
+    <img style="width:20%;margin: 0 0 0 2em" src="cid:logoisencid">
     </div>
     </html>`;
   }
