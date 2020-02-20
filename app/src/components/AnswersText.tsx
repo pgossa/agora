@@ -18,7 +18,7 @@ export default function AnswersText({ update, answers }: Props) {
 	const [localAnswers, setLocalAnswers] = React.useState<string[]>(answers);
 
 	const updateAnswer = (answer: string, id: number) => {
-		const newLocalAnswers: string[] = localAnswers.map(
+		const newLocalAnswers: string[] = answers.map(
 			(localAnswer: string, index: number) => {
 				if (index == id) {
 					return answer;
@@ -40,6 +40,13 @@ export default function AnswersText({ update, answers }: Props) {
 		update(newLocalAnswers.filter(Boolean));
 	};
 
+	React.useEffect(() => {
+		if(answers === ['']){
+			setLocalAnswers([''])
+		}
+	}, [answers])
+
+	console.log(answers)
 	return (
 		<Grid
 			container

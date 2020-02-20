@@ -23,6 +23,14 @@ export default function AnswerText({ update, answer, id, remove }: Props) {
 		update(value, id);
 	};
 
+	
+
+	React.useEffect(() => {
+		if(answer === ''){
+			setLocalAnswer('')
+		}
+	}, [answer])
+
 	return (
 		<Grid item>
 			<Grid
@@ -30,10 +38,10 @@ export default function AnswerText({ update, answer, id, remove }: Props) {
 				direction="row"
 				justify="center"
 				alignItems="center"
-
 			>
 				<Grid item>
 					<TextField
+						autoComplete="off"
 						id={id.toString()}
 						label="Answer"
 						variant="outlined"
@@ -69,6 +77,4 @@ export default function AnswerText({ update, answer, id, remove }: Props) {
 	);
 }
 
-const useStyles = makeStyles({
-
-});
+const useStyles = makeStyles({});

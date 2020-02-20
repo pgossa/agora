@@ -179,7 +179,7 @@ function AnswerPage(props: Props) {
 					justify="center"
 					alignItems="center"
 					style={{ minHeight: "90vh" }}
-					spacing={8}
+					// spacing={8}
 				>
 					<Grid item lg={4} xl={4} md={4}>
 						<Grid
@@ -302,7 +302,7 @@ function AnswerPage(props: Props) {
 										backgroundColor: "#D2D1D4",
 										padding: "20px",
 										borderRadius: "23px",
-										minWidth: "50vh",
+										minWidth: "50vw",
 									}}
 								>
 									<Grid
@@ -324,7 +324,7 @@ function AnswerPage(props: Props) {
 													backgroundColor: "white",
 													padding: "20px",
 													borderRadius: "21px",
-													minWidth: "50vh",
+													minWidth: "50vw",
 												}}
 											>
 												<Grid item>
@@ -348,7 +348,7 @@ function AnswerPage(props: Props) {
 													backgroundColor: "white",
 													padding: "20px",
 													borderRadius: "21px",
-													minWidth: "50vh",
+													minWidth: "50vw",
 												}}
 											>
 												<RadioGroup
