@@ -1,0 +1,4 @@
+/api/node_modules
+/api/dist
+build.log
+api/package-lock.json

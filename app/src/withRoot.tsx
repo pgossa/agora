@@ -2,14 +2,15 @@ import { CssBaseline } from "@material-ui/core";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import * as React from "react";
+import { Suspense } from "react";
 
 // A theme with custom primary and secondary color.
 // It's optional.
-const theme = createMuiTheme({
+export const theme = createMuiTheme({
 	palette: {
 		primary: {
-			light: "#e5e5e5",
-			main: "#727272",
+			light: "#0099ff",
+			main: "#0099ff",
 			dark: "#363839",
 			contrastText: "#fff",
 		},
@@ -27,11 +28,13 @@ function withRoot(Component: any) {
 		// MuiThemeProvider makes the theme available down the React tree
 		// thanks to React context.
 		return (
-			<ThemeProvider theme={theme}>
-				{/* Reboot kickstart an elegant, consistent, and simple baseline to build upon. */}
-				<CssBaseline />
-				<Component {...props} />
-			</ThemeProvider>
+			<Suspense fallback={<div>Loading...</div>}>
+				<ThemeProvider theme={theme}>
+					{/* Reboot kickstart an elegant, consistent, and simple baseline to build upon. */}
+					<CssBaseline />
+					<Component {...props} />
+				</ThemeProvider>
+			</Suspense>
 		);
 	}
 

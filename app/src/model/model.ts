@@ -10,11 +10,13 @@ export interface QuestionAnswer {
 }
 export interface Question {
     id: number,
-    type: QuestionType,
+    type: QuestionType | undefined,
     text: string,
     answers: QuestionAnswer[]
 }
-export interface Sondage {
+export interface Survey {
+    code: string;
+    uuid: string;
     id: string;
     questions: Question[];
 }
