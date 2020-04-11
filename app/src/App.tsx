@@ -8,54 +8,61 @@ import MenuIcon from "@material-ui/icons/Menu";
 import { makeStyles } from "@material-ui/styles";
 import * as React from "react";
 import { connect } from "react-redux";
-import { Route, RouteComponentProps, Router } from "react-router-dom";
-import { history } from "./configureStore";
+import {
+	Route,
+	RouteComponentProps,
+	BrowserRouter as Router,
+	Redirect,
+	Link,
+} from "react-router-dom";
+// import { history } from "./configureStore";
 import { Question } from "./model/model";
 import HomePage from "./pages/HomePage";
 import CreatePage from "./pages/CreatePage";
-import { RootState } from "./reducers/index";
 import withRoot from "./withRoot";
+import ResultPage from "./pages/ResultPage";
+import AnswerPage from "./pages/AnswerPage";
+import { useState } from "react";
+
+import axios from "axios";
+
+import io from "socket.io-client";
+
+// export const BASE_URL = "http://localhost:3005";
+// export const Socket = io("http://192.168.1.86:3005");
+
+//Prod
+export const BASE_URL = 'http://89.83.80.125:8080'
+// export const Socket = io("http://agorapi:3005");
+
+axios.defaults.baseURL = BASE_URL;
 
 function Routes() {
 	const classes = useStyles();
 
 	return (
-		<div className={classes.content}>
+		<div>
 			<Route exact={true} path="/" component={HomePage} />
 			<Route exact={true} path="/home" component={HomePage} />
 			<Route exact={true} path="/create" component={CreatePage} />
+			<Route exact={true} path="/answer" component={AnswerPage} />
+			<Route exact={true} path="/result/:uuid" component={ResultPage} />
 		</div>
 	);
 }
 
+interface Props extends RouteComponentProps<void>, WithWidth {}
 
-interface Props extends RouteComponentProps<void>, WithWidth {
-	questionList: Question[];
-}
-
-function App(props?: Props) {
+function App(props: Props) {
 	const classes = useStyles();
-
 	if (!props) {
 		return null;
 	}
 
 	return (
-		<Router history={history}>
+		<Router>
 			<div className={classes.root}>
-				<div className={classes.appFrame}>
-					<AppBar className={classes.appBar}>
-						<Toolbar>
-		
-							<Typography
-								variant="h6"
-								color="inherit"
-								noWrap={isWidthUp("sm", props.width)}
-							>
-							Agora
-							</Typography>
-						</Toolbar>
-					</AppBar>
+				<div>
 					<Routes />
 				</div>
 			</div>
@@ -68,39 +75,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 		width: "100%",
 		height: "100%",
 		zIndex: 1,
-		// overflow: "hidden",
-	},
-	appFrame: {
-		position: "relative",
-		display: "flex",
-		width: "100%",
-		height: "100%",
-	},
-	appBar: {
-		zIndex: theme.zIndex.drawer + 1,
-		position: "absolute",
-	},
-	navIconHide: {
-		[theme.breakpoints.up("md")]: {
-			display: "none",
-		},
-	},
-	content: {
-		backgroundColor: theme.palette.background.default,
-		width: "100%",
-		height: "calc(100% - 56px)",
-		marginTop: 56,
-		[theme.breakpoints.up("sm")]: {
-			height: "calc(100% - 64px)",
-			marginTop: 64,
-		},
+		overflowY: 'hidden',
+		overflowX: 'hidden'
 	},
 }));
 
-function mapStateToProps(state: RootState) {
-	return {
-		questionList: state.questionList,
-	};
-}
-
-export default connect(mapStateToProps)(withRoot(withWidth()(App)));
+export default withRoot(withWidth()(App));

@@ -2,8 +2,6 @@
 import { Button, Dialog, DialogActions, DialogTitle, TextField, ButtonGroup, Grid, IconButton, Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import * as React from "react";
-import { useActions } from "../actions";
-import * as QuestionActions from "../actions/question";
 import { QuestionType, QuestionAnswer, Question } from "../model/model";
 import DeleteIcon from "@material-ui/icons/Delete";
 
@@ -11,6 +9,7 @@ interface Props {
 	answer: QuestionAnswer;
 	update: (answer: QuestionAnswer) => void;
 	remove?: (id: number) => void;
+	check: boolean;
 }
 
 export default function Answer({ answer, update, remove }: Props) {
@@ -31,16 +30,18 @@ export default function Answer({ answer, update, remove }: Props) {
 			container
 			direction="row"
 			justify="space-around"
-			alignItems='flex-start'
-			spacing={1}
+			alignItems="center"
+			// spacing={1}
+			wrap='nowrap'
 		>
 			<Grid item>
 				<TextField
-					id={"response" + answer.id}
-					label="Response"
-					variant="outlined"
+					id={"answer" + answer.id}
+					label="Reponse"
+					// variant="outlined"
 					value={textLocal}
 					onChange={handleChangeText}
+					margin='none'
 				/>
 			</Grid>
 			{remove ? (
@@ -54,7 +55,18 @@ export default function Answer({ answer, update, remove }: Props) {
 						<DeleteIcon fontSize="small" />
 					</IconButton>
 				</Grid>
-			) : null}
+			) : (
+				<Grid item>
+					<IconButton
+						aria-label="Delete"
+						color="default"
+						size="small"
+						style={{visibility:'hidden'}}
+					>
+						<DeleteIcon fontSize="small" />
+					</IconButton>
+				</Grid>
+			)}
 		</Grid>
 	);
 }
