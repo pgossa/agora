@@ -25,7 +25,7 @@ export class MailerService {
       secure: true,
       auth: {
         user: 'agora.survey@gmail.com',
-        pass: 'hkf8JiS9g3Th',
+        pass: 'passwd',
       },
     });
   }
